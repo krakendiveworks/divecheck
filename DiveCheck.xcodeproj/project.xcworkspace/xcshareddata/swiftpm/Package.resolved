@@ -1,0 +1,24 @@
+{
+  "originHash" : "8d198afa387687d0c5610539c107678d5346305986cfbd1b116f6fff98780af4",
+  "pins" : [
+    {
+      "identity" : "fit-objective-c-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/garmin/fit-objective-c-sdk.git",
+      "state" : {
+        "revision" : "f714691ac0837e0c881c9f0460e1a137615dee15",
+        "version" : "21.212.0"
+      }
+    },
+    {
+      "identity" : "libdc-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/deepsealabs/libdc-swift",
+      "state" : {
+        "revision" : "4c845dd15163f5b5c9b640a2086ac58869c51d55",
+        "version" : "1.9.0"
+      }
+    }
+  ],
+  "version" : 3
+}

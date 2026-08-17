@@ -1,0 +1,243 @@
+import SwiftUI
+
+/// Default units applied to newly-created Dive Log entries. Purely a
+/// starting point -- every entry still has its own per-dive unit toggles
+/// (see DiveLogDetailView), and changing a default here never touches
+/// dives already logged.
+struct SettingsView: View {
+    @ObservedObject var store: AppStore
+    @State private var remindersAuthorized = false
+    @State private var didCheckAuthorization = false
+    @State private var isShowingProfessionalInfoSheet = false
+
+    /// Whether the diver has already provided the agency/professional
+    /// number gate required to turn Training on -- see `trainingToggleBinding`.
+    private var hasProfessionalInfo: Bool {
+        !(store.trainingProfessionalAgency ?? "").isEmpty && !(store.trainingProfessionalNumber ?? "").isEmpty
+    }
+
+    /// Intercepts turning Training on: if the diver hasn't provided their
+    /// certifying agency and professional/instructor number yet, this
+    /// opens the entry sheet instead of flipping the toggle immediately.
+    /// The sheet itself sets `isTrainingSectionEnabled = true` once saved.
+    /// Turning Training off always goes straight through.
+    private var trainingToggleBinding: Binding<Bool> {
+        Binding(
+            get: { store.isTrainingSectionEnabled },
+            set: { newValue in
+                if newValue && !hasProfessionalInfo {
+                    isShowingProfessionalInfoSheet = true
+                } else {
+                    store.isTrainingSectionEnabled = newValue
+                }
+            }
+        )
+    }
+
+    var body: some View {
+        Form {
+            Section {
+                Toggle("Reminders", isOn: Binding(
+                    get: { remindersAuthorized },
+                    set: { enabled in
+                        if enabled {
+                            Task {
+                                remindersAuthorized = await NotificationScheduler.requestAuthorization()
+                                // Re-schedule against whatever's already set so
+                                // reminders show up right away instead of
+                                // waiting for the next edit.
+                                if remindersAuthorized {
+                                    for item in store.equipmentLocker {
+                                        NotificationScheduler.scheduleEquipmentReminder(itemID: item.id, name: item.name, dueDate: item.nextServiceDue)
+                                    }
+                                    for plan in store.emergencyActionPlans {
+                                        let locationName = store.location(withID: plan.locationID)?.name ?? ""
+                                        NotificationScheduler.scheduleEAPReviewReminder(planID: plan.id, locationName: locationName, lastReviewedAt: plan.lastReviewedAt)
+                                    }
+                                }
+                            }
+                        } else {
+                            for item in store.equipmentLocker {
+                                NotificationScheduler.cancelEquipmentReminder(itemID: item.id)
+                            }
+                            for plan in store.emergencyActionPlans {
+                                NotificationScheduler.cancelEAPReviewReminder(planID: plan.id)
+                            }
+                            remindersAuthorized = false
+                        }
+                    }
+                ))
+            } header: {
+                Text("Reminders")
+            } footer: {
+                Text("Local notifications for Equipment Locker items due for service and Emergency Action Plans due for their periodic review. Turning this off if you'd previously granted permission in Settings > Notifications just cancels the reminders already scheduled -- you can turn it back on any time.")
+            }
+
+            Section {
+                Picker("Depth", selection: $store.defaultDepthUnit) {
+                    ForEach(DepthUnit.allCases) { unit in
+                        Text(unit == .feet ? "Feet" : "Meters").tag(unit)
+                    }
+                }
+                .pickerStyle(.segmented)
+                Picker("Temperature", selection: $store.defaultTemperatureUnit) {
+                    ForEach(TemperatureUnit.allCases) { unit in
+                        Text(unit == .fahrenheit ? "°F" : "°C").tag(unit)
+                    }
+                }
+                .pickerStyle(.segmented)
+                Picker("Weight", selection: $store.defaultWeightUnit) {
+                    ForEach(WeightUnit.allCases) { unit in
+                        Text(unit == .lbs ? "lbs" : "kg").tag(unit)
+                    }
+                }
+                .pickerStyle(.segmented)
+            } header: {
+                Text("Default Units")
+            } footer: {
+                Text("Used to pre-fill a new Dive Log entry's unit toggles. You can still change units per-dive at any time -- switching them there converts the numbers already entered, it doesn't just relabel them. Existing dive log entries aren't affected by changing these defaults.")
+            }
+
+            Section {
+                Toggle("Admin Mode", isOn: $store.isAdminModeEnabled)
+            } header: {
+                Text("Admin Mode")
+            } footer: {
+                Text("Adds a Select button to the Dive Log for choosing multiple dives at once -- Select All, bulk delete, and bulk-editing shared fields like Location, Site Type, and Entry Type across everything selected. Off by default since these actions touch a lot of dives at once.")
+            }
+
+            Section {
+                Toggle("Training", isOn: trainingToggleBinding)
+                if hasProfessionalInfo {
+                    HStack(alignment: .top, spacing: 8) {
+                        Image(systemName: "person.text.rectangle.fill")
+                            .foregroundStyle(.secondary)
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(store.trainingProfessionalAgency ?? "")
+                            Text("Professional # \(store.trainingProfessionalNumber ?? "")")
+                                .foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Button("Edit") {
+                            isShowingProfessionalInfoSheet = true
+                        }
+                        .font(.footnote)
+                    }
+                    .font(.footnote)
+                }
+            } header: {
+                Text("Training")
+            } footer: {
+                Text("Shows a Training row on the main menu with certification skill requirements grouped by agency and certification level -- a checklist per skill with the official performance requirement noted underneath. This section is meant for instructors and divemasters tracking certification requirements, so turning it on requires entering the agency you're credentialed with and your professional/instructor number. Turning it off just hides the menu entry; nothing already checked off is lost.")
+            }
+
+            // Read-only record of the safety disclaimer the diver had to
+            // accept before using the app -- see DisclaimerView.swift.
+            // Nothing here is editable; there's no way to revoke
+            // acknowledgment from Settings.
+            Section {
+                Text(DisclaimerView.disclaimerText)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                HStack(alignment: .top, spacing: 8) {
+                    Image(systemName: "checkmark.seal.fill")
+                        .foregroundStyle(.green)
+                    if let date = store.disclaimerAcknowledgedDate {
+                        Text("Accepted \(date.formatted(date: .abbreviated, time: .shortened))")
+                    } else {
+                        Text("Accepted")
+                    }
+                }
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+            } header: {
+                Text("Disclaimer")
+            }
+
+            // Plain read-only build markers -- exists so a build that
+            // actually picked up the latest seed content can be told apart
+            // at a glance from one running stale/cached code, e.g. to check
+            // whether a device that's missing a checklist is really running
+            // the build that added it. Bump SeedData/TrainingSeedData's
+            // contentVersion as usual; these labels just mirror whatever
+            // that constant currently is, no extra bookkeeping needed.
+            Section {
+                LabeledContent("Checklist Content", value: "v\(SeedData.contentVersion)")
+                LabeledContent("Training Content", value: "v\(TrainingSeedData.contentVersion)")
+            } header: {
+                Text("Build Info")
+            } footer: {
+                Text("If a checklist you expect to see is missing, compare these numbers against what's in the source on your Mac -- a mismatch means this device is still running an older build.")
+            }
+        }
+        .navigationTitle("Settings")
+        .navigationBarTitleDisplayMode(.inline)
+        .task {
+            guard !didCheckAuthorization else { return }
+            didCheckAuthorization = true
+            remindersAuthorized = await NotificationScheduler.isAuthorized()
+        }
+        .sheet(isPresented: $isShowingProfessionalInfoSheet) {
+            TrainingProfessionalInfoSheet(
+                agency: store.trainingProfessionalAgency ?? "",
+                number: store.trainingProfessionalNumber ?? "",
+                onSave: { agency, number in
+                    store.trainingProfessionalAgency = agency
+                    store.trainingProfessionalNumber = number
+                    store.isTrainingSectionEnabled = true
+                }
+            )
+        }
+    }
+}
+
+/// Gates turning Training on -- collects the certifying agency and
+/// professional/instructor number SettingsView requires before it will
+/// flip `isTrainingSectionEnabled`. Cancelling leaves Training off and
+/// discards whatever was typed; Save only enables once both fields are
+/// non-empty.
+private struct TrainingProfessionalInfoSheet: View {
+    @State var agency: String
+    @State var number: String
+    var onSave: (String, String) -> Void
+
+    @Environment(\.dismiss) private var dismiss
+
+    private var trimmedAgency: String { agency.trimmingCharacters(in: .whitespacesAndNewlines) }
+    private var trimmedNumber: String { number.trimmingCharacters(in: .whitespacesAndNewlines) }
+
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section {
+                    TextField("Certifying Agency (e.g. PADI, SDI)", text: $agency)
+                        .textInputAutocapitalization(.words)
+                    TextField("Professional/Instructor Number", text: $number)
+                        .textInputAutocapitalization(.characters)
+                } footer: {
+                    Text("The Training section is meant for instructors and divemasters tracking certification requirements. This is stored on-device (and synced to your other Apple devices) and shown read-only in Settings once saved.")
+                }
+            }
+            .navigationTitle("Training Access")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") {
+                        onSave(trimmedAgency, trimmedNumber)
+                        dismiss()
+                    }
+                    .disabled(trimmedAgency.isEmpty || trimmedNumber.isEmpty)
+                }
+            }
+        }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        SettingsView(store: AppStore())
+    }
+}

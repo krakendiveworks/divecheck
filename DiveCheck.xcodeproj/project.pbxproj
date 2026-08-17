@@ -1,0 +1,836 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1A0000000000000000000020 /* DiveCheckApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000010 /* DiveCheckApp.swift */; };
+		1A0000000000000000000021 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000011 /* ContentView.swift */; };
+		1A0000000000000000000025 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A0000000000000000000015 /* Assets.xcassets */; };
+		1C0000000000000000000001 /* CategoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000001 /* CategoryDetailView.swift */; };
+		1C0000000000000000000002 /* SubcategoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000002 /* SubcategoryDetailView.swift */; };
+		1C0000000000000000000003 /* ChecklistDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000003 /* ChecklistDetailView.swift */; };
+		1C0000000000000000000004 /* ChecklistItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000004 /* ChecklistItemRow.swift */; };
+		1C0000000000000000000005 /* AddChecklistItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000005 /* AddChecklistItemView.swift */; };
+		1C0000000000000000000006 /* AddChecklistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000006 /* AddChecklistView.swift */; };
+		1C0000000000000000000007 /* AddSubcategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000007 /* AddSubcategoryView.swift */; };
+		1C0000000000000000000008 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000008 /* Route.swift */; };
+		1C0000000000000000000009 /* ItemField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000009 /* ItemField.swift */; };
+		1C000000000000000000000A /* ChecklistItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000000A /* ChecklistItem.swift */; };
+		1C000000000000000000000B /* Checklist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000000B /* Checklist.swift */; };
+		1C000000000000000000000C /* DiveSubcategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000000C /* DiveSubcategory.swift */; };
+		1C000000000000000000000D /* DiveCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000000D /* DiveCategory.swift */; };
+		1C000000000000000000000E /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000000E /* AppStore.swift */; };
+		1C000000000000000000000F /* SeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000000F /* SeedData.swift */; };
+		1C0000000000000000000010 /* SavedChecklist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000010 /* SavedChecklist.swift */; };
+		1C0000000000000000000011 /* HistoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000011 /* HistoryListView.swift */; };
+		1C0000000000000000000012 /* SavedChecklistDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000012 /* SavedChecklistDetailView.swift */; };
+		1C0000000000000000000013 /* Equipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000013 /* Equipment.swift */; };
+		1C0000000000000000000014 /* DiveLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000014 /* DiveLogEntry.swift */; };
+		1C0000000000000000000015 /* EquipmentLockerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000015 /* EquipmentLockerListView.swift */; };
+		1C0000000000000000000016 /* EquipmentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000016 /* EquipmentDetailView.swift */; };
+		1C0000000000000000000017 /* AddEquipmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000017 /* AddEquipmentView.swift */; };
+		1C0000000000000000000018 /* AddServiceRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000018 /* AddServiceRecordView.swift */; };
+		1C0000000000000000000019 /* DiveLogListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000019 /* DiveLogListView.swift */; };
+		1C000000000000000000001A /* DiveLogDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000001A /* DiveLogDetailView.swift */; };
+		1C000000000000000000001B /* EquipmentPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000001B /* EquipmentPickerView.swift */; };
+		1C000000000000000000001C /* SavedLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000001C /* SavedLocation.swift */; };
+		1C000000000000000000001D /* DiveBuddy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000001D /* DiveBuddy.swift */; };
+		1C000000000000000000001E /* LocationPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000001E /* LocationPickerView.swift */; };
+		1C000000000000000000001F /* BuddyPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000001F /* BuddyPickerView.swift */; };
+		1C0000000000000000000020 /* LabeledFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000020 /* LabeledFields.swift */; };
+		1C0000000000000000000021 /* DiveChecklistsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000021 /* DiveChecklistsListView.swift */; };
+		1C0000000000000000000022 /* SACCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000022 /* SACCalculatorView.swift */; };
+		1C0000000000000000000023 /* MODCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000023 /* MODCalculatorView.swift */; };
+		1C0000000000000000000024 /* PPO2CalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000024 /* PPO2CalculatorView.swift */; };
+		1C0000000000000000000025 /* CalculatorsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000025 /* CalculatorsListView.swift */; };
+		1C0000000000000000000026 /* BestMixCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000026 /* BestMixCalculatorView.swift */; };
+		1C0000000000000000000027 /* BluetoothDiveImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000027 /* BluetoothDiveImportView.swift */; };
+		1C0000000000000000000028 /* GarminFITImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000028 /* GarminFITImportView.swift */; };
+		1C0000000000000000000029 /* GarminFITParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000029 /* GarminFITParser.swift */; };
+		1C000000000000000000002A /* LocationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000002A /* LocationsListView.swift */; };
+		1C000000000000000000002B /* LocationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000002B /* LocationDetailView.swift */; };
+		1C000000000000000000002C /* EmergencyActionPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000002C /* EmergencyActionPlan.swift */; };
+		1C000000000000000000002D /* EmergencyActionPlansListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000002D /* EmergencyActionPlansListView.swift */; };
+		1C000000000000000000002E /* EAPDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000002E /* EAPDetailView.swift */; };
+		1C000000000000000000002F /* UnitConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000002F /* UnitConversion.swift */; };
+		1C0000000000000000000030 /* PlanMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000030 /* PlanMenuView.swift */; };
+		1C0000000000000000000031 /* DivesMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000031 /* DivesMenuView.swift */; };
+		1C0000000000000000000032 /* EquipmentMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000032 /* EquipmentMenuView.swift */; };
+		1C0000000000000000000033 /* PlaceholderToolView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000033 /* PlaceholderToolView.swift */; };
+		1C0000000000000000000034 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000034 /* SettingsView.swift */; };
+		1C0000000000000000000035 /* StatisticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000035 /* StatisticsView.swift */; };
+		1C0000000000000000000036 /* MaintenanceScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000036 /* MaintenanceScheduleView.swift */; };
+		1C0000000000000000000037 /* ServiceHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000037 /* ServiceHistoryView.swift */; };
+		1C0000000000000000000038 /* PhoneFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000038 /* PhoneFormatting.swift */; };
+		1C0000000000000000000039 /* CloudSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000039 /* CloudSync.swift */; };
+		1C0000000000000000000041 /* Certification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000041 /* Certification.swift */; };
+		1C0000000000000000000042 /* DiverMedicalID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000042 /* DiverMedicalID.swift */; };
+		1C0000000000000000000043 /* CertificationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000043 /* CertificationsListView.swift */; };
+		1C0000000000000000000044 /* CertificationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000044 /* CertificationDetailView.swift */; };
+		1C0000000000000000000045 /* DiverMedicalIDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000045 /* DiverMedicalIDView.swift */; };
+		1C0000000000000000000046 /* LocationServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000046 /* LocationServices.swift */; };
+		1C0000000000000000000047 /* DiveSiteMapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000047 /* DiveSiteMapView.swift */; };
+		1C0000000000000000000048 /* SACCalculation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000048 /* SACCalculation.swift */; };
+		1C0000000000000000000049 /* NotificationScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000049 /* NotificationScheduler.swift */; };
+		1C0000000000000000000050 /* EAPPDFRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000050 /* EAPPDFRenderer.swift */; };
+		1C0000000000000000000051 /* ShareSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000051 /* ShareSheet.swift */; };
+		1C0000000000000000000052 /* PhotoStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000052 /* PhotoStorage.swift */; };
+		1C0000000000000000000053 /* DiveComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000053 /* DiveComputer.swift */; };
+		1C0000000000000000000054 /* DiveComputersListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000054 /* DiveComputersListView.swift */; };
+		1C0000000000000000000055 /* DiveComputerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000055 /* DiveComputerDetailView.swift */; };
+		1C0000000000000000000056 /* DiveComputerPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000056 /* DiveComputerPickerView.swift */; };
+		1C0000000000000000000057 /* DiveLogBulkEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000057 /* DiveLogBulkEdit.swift */; };
+		1C0000000000000000000058 /* BulkEditDiveLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000058 /* BulkEditDiveLogView.swift */; };
+		1C0000000000000000000059 /* CameraCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000059 /* CameraCapture.swift */; };
+		1C000000000000000000005A /* EADCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000005A /* EADCalculatorView.swift */; };
+		1C000000000000000000005B /* GasTimeCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000005B /* GasTimeCalculatorView.swift */; };
+		1C0000000000000000000072 /* TankFillCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000072 /* TankFillCalculatorView.swift */; };
+		1C000000000000000000005C /* MinimumGasCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000005C /* MinimumGasCalculatorView.swift */; };
+		1C000000000000000000005D /* CNSOxygenCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000005D /* CNSOxygenCalculatorView.swift */; };
+		1C000000000000000000005E /* WeightCheckCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000005E /* WeightCheckCalculatorView.swift */; };
+		1C000000000000000000005F /* ENDCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000005F /* ENDCalculatorView.swift */; };
+		1C0000000000000000000060 /* WalletMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000060 /* WalletMenuView.swift */; };
+		1C0000000000000000000061 /* DiverMedicalIDPDFRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000061 /* DiverMedicalIDPDFRenderer.swift */; };
+		1C0000000000000000000062 /* DocumentStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000062 /* DocumentStorage.swift */; };
+		1C0000000000000000000063 /* DocumentPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000063 /* DocumentPreview.swift */; };
+		1C0000000000000000000064 /* FullScreenImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000064 /* FullScreenImageViewer.swift */; };
+		1C0000000000000000000065 /* DisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000065 /* DisclaimerView.swift */; };
+		1C0000000000000000000066 /* TrainingAgency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000066 /* TrainingAgency.swift */; };
+		1C0000000000000000000067 /* TrainingCertification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000067 /* TrainingCertification.swift */; };
+		1C0000000000000000000068 /* TrainingSeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000068 /* TrainingSeedData.swift */; };
+		1C0000000000000000000069 /* TrainingAgenciesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000069 /* TrainingAgenciesListView.swift */; };
+		1C000000000000000000006A /* TrainingCertificationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000006A /* TrainingCertificationsListView.swift */; };
+		1C000000000000000000006B /* TrainingCertificationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000006B /* TrainingCertificationDetailView.swift */; };
+		1C000000000000000000006C /* TrainingCandidate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000006C /* TrainingCandidate.swift */; };
+		1C000000000000000000006D /* TrainingRosterProgram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000006D /* TrainingRosterProgram.swift */; };
+		1C000000000000000000006E /* DivemasterSeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000006E /* DivemasterSeedData.swift */; };
+		1C000000000000000000006F /* TrainingCandidatesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000006F /* TrainingCandidatesListView.swift */; };
+		1C0000000000000000000070 /* AddTrainingCandidateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000070 /* AddTrainingCandidateView.swift */; };
+		1C0000000000000000000071 /* TrainingCandidateDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000071 /* TrainingCandidateDetailView.swift */; };
+		FA06EBE93023694E00C28869 /* LibDCSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FA06EBE83023694E00C28869 /* LibDCSwift */; };
+		FA06EBF630236A2B00C28869 /* LibDCSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FA06EBF530236A2B00C28869 /* LibDCSwift */; };
+		FA06EBF930236E4400C28869 /* FIT in Frameworks */ = {isa = PBXBuildFile; productRef = FA06EBF830236E4400C28869 /* FIT */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1A0000000000000000000006 /* DiveCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DiveCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A0000000000000000000010 /* DiveCheckApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveCheckApp.swift; sourceTree = "<group>"; };
+		1A0000000000000000000011 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1A0000000000000000000015 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1B0000000000000000000001 /* CategoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDetailView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000002 /* SubcategoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubcategoryDetailView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000003 /* ChecklistDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistDetailView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000004 /* ChecklistItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistItemRow.swift; sourceTree = "<group>"; };
+		1B0000000000000000000005 /* AddChecklistItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChecklistItemView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000006 /* AddChecklistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddChecklistView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000007 /* AddSubcategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubcategoryView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000008 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
+		1B0000000000000000000009 /* ItemField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemField.swift; sourceTree = "<group>"; };
+		1B000000000000000000000A /* ChecklistItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChecklistItem.swift; sourceTree = "<group>"; };
+		1B000000000000000000000B /* Checklist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checklist.swift; sourceTree = "<group>"; };
+		1B000000000000000000000C /* DiveSubcategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveSubcategory.swift; sourceTree = "<group>"; };
+		1B000000000000000000000D /* DiveCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveCategory.swift; sourceTree = "<group>"; };
+		1B000000000000000000000E /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
+		1B000000000000000000000F /* SeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedData.swift; sourceTree = "<group>"; };
+		1B0000000000000000000010 /* SavedChecklist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedChecklist.swift; sourceTree = "<group>"; };
+		1B0000000000000000000011 /* HistoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryListView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000012 /* SavedChecklistDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedChecklistDetailView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000013 /* Equipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Equipment.swift; sourceTree = "<group>"; };
+		1B0000000000000000000014 /* DiveLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveLogEntry.swift; sourceTree = "<group>"; };
+		1B0000000000000000000015 /* EquipmentLockerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentLockerListView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000016 /* EquipmentDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentDetailView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000017 /* AddEquipmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEquipmentView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000018 /* AddServiceRecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddServiceRecordView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000019 /* DiveLogListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveLogListView.swift; sourceTree = "<group>"; };
+		1B000000000000000000001A /* DiveLogDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveLogDetailView.swift; sourceTree = "<group>"; };
+		1B000000000000000000001B /* EquipmentPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentPickerView.swift; sourceTree = "<group>"; };
+		1B000000000000000000001C /* SavedLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedLocation.swift; sourceTree = "<group>"; };
+		1B000000000000000000001D /* DiveBuddy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveBuddy.swift; sourceTree = "<group>"; };
+		1B000000000000000000001E /* LocationPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerView.swift; sourceTree = "<group>"; };
+		1B000000000000000000001F /* BuddyPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuddyPickerView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000020 /* LabeledFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabeledFields.swift; sourceTree = "<group>"; };
+		1B0000000000000000000021 /* DiveChecklistsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveChecklistsListView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000022 /* SACCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SACCalculatorView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000023 /* MODCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MODCalculatorView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000024 /* PPO2CalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPO2CalculatorView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000025 /* CalculatorsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorsListView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000026 /* BestMixCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BestMixCalculatorView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000027 /* BluetoothDiveImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothDiveImportView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000028 /* GarminFITImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GarminFITImportView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000029 /* GarminFITParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GarminFITParser.swift; sourceTree = "<group>"; };
+		1B000000000000000000002A /* LocationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsListView.swift; sourceTree = "<group>"; };
+		1B000000000000000000002B /* LocationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDetailView.swift; sourceTree = "<group>"; };
+		1B000000000000000000002C /* EmergencyActionPlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyActionPlan.swift; sourceTree = "<group>"; };
+		1B000000000000000000002D /* EmergencyActionPlansListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmergencyActionPlansListView.swift; sourceTree = "<group>"; };
+		1B000000000000000000002E /* EAPDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EAPDetailView.swift; sourceTree = "<group>"; };
+		1B000000000000000000002F /* UnitConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitConversion.swift; sourceTree = "<group>"; };
+		1B0000000000000000000030 /* PlanMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanMenuView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000031 /* DivesMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DivesMenuView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000032 /* EquipmentMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipmentMenuView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000033 /* PlaceholderToolView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderToolView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000034 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000035 /* StatisticsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000036 /* MaintenanceScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaintenanceScheduleView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000037 /* ServiceHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceHistoryView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000038 /* PhoneFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneFormatting.swift; sourceTree = "<group>"; };
+		1B0000000000000000000039 /* CloudSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudSync.swift; sourceTree = "<group>"; };
+		1B0000000000000000000040 /* DiveCheck.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DiveCheck.entitlements; sourceTree = "<group>"; };
+		1B0000000000000000000041 /* Certification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Certification.swift; sourceTree = "<group>"; };
+		1B0000000000000000000042 /* DiverMedicalID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiverMedicalID.swift; sourceTree = "<group>"; };
+		1B0000000000000000000043 /* CertificationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationsListView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000044 /* CertificationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificationDetailView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000045 /* DiverMedicalIDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiverMedicalIDView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000046 /* LocationServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationServices.swift; sourceTree = "<group>"; };
+		1B0000000000000000000047 /* DiveSiteMapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveSiteMapView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000048 /* SACCalculation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SACCalculation.swift; sourceTree = "<group>"; };
+		1B0000000000000000000049 /* NotificationScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationScheduler.swift; sourceTree = "<group>"; };
+		1B0000000000000000000050 /* EAPPDFRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EAPPDFRenderer.swift; sourceTree = "<group>"; };
+		1B0000000000000000000051 /* ShareSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareSheet.swift; sourceTree = "<group>"; };
+		1B0000000000000000000052 /* PhotoStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStorage.swift; sourceTree = "<group>"; };
+		1B0000000000000000000053 /* DiveComputer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveComputer.swift; sourceTree = "<group>"; };
+		1B0000000000000000000054 /* DiveComputersListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveComputersListView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000055 /* DiveComputerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveComputerDetailView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000056 /* DiveComputerPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveComputerPickerView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000057 /* DiveLogBulkEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiveLogBulkEdit.swift; sourceTree = "<group>"; };
+		1B0000000000000000000058 /* BulkEditDiveLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkEditDiveLogView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000059 /* CameraCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCapture.swift; sourceTree = "<group>"; };
+		1B000000000000000000005A /* EADCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EADCalculatorView.swift; sourceTree = "<group>"; };
+		1B000000000000000000005B /* GasTimeCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasTimeCalculatorView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000072 /* TankFillCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankFillCalculatorView.swift; sourceTree = "<group>"; };
+		1B000000000000000000005C /* MinimumGasCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimumGasCalculatorView.swift; sourceTree = "<group>"; };
+		1B000000000000000000005D /* CNSOxygenCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNSOxygenCalculatorView.swift; sourceTree = "<group>"; };
+		1B000000000000000000005E /* WeightCheckCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightCheckCalculatorView.swift; sourceTree = "<group>"; };
+		1B000000000000000000005F /* ENDCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ENDCalculatorView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000060 /* WalletMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletMenuView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000061 /* DiverMedicalIDPDFRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiverMedicalIDPDFRenderer.swift; sourceTree = "<group>"; };
+		1B0000000000000000000062 /* DocumentStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentStorage.swift; sourceTree = "<group>"; };
+		1B0000000000000000000063 /* DocumentPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentPreview.swift; sourceTree = "<group>"; };
+		1B0000000000000000000064 /* FullScreenImageViewer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenImageViewer.swift; sourceTree = "<group>"; };
+		1B0000000000000000000065 /* DisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisclaimerView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000066 /* TrainingAgency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingAgency.swift; sourceTree = "<group>"; };
+		1B0000000000000000000067 /* TrainingCertification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingCertification.swift; sourceTree = "<group>"; };
+		1B0000000000000000000068 /* TrainingSeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingSeedData.swift; sourceTree = "<group>"; };
+		1B0000000000000000000069 /* TrainingAgenciesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingAgenciesListView.swift; sourceTree = "<group>"; };
+		1B000000000000000000006A /* TrainingCertificationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingCertificationsListView.swift; sourceTree = "<group>"; };
+		1B000000000000000000006B /* TrainingCertificationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingCertificationDetailView.swift; sourceTree = "<group>"; };
+		1B000000000000000000006C /* TrainingCandidate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingCandidate.swift; sourceTree = "<group>"; };
+		1B000000000000000000006D /* TrainingRosterProgram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingRosterProgram.swift; sourceTree = "<group>"; };
+		1B000000000000000000006E /* DivemasterSeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DivemasterSeedData.swift; sourceTree = "<group>"; };
+		1B000000000000000000006F /* TrainingCandidatesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingCandidatesListView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000070 /* AddTrainingCandidateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrainingCandidateView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000071 /* TrainingCandidateDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingCandidateDetailView.swift; sourceTree = "<group>"; };
+		FA06EBFA3023727A00C28869 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1A000000000000000000000E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FA06EBF930236E4400C28869 /* FIT in Frameworks */,
+				FA06EBF630236A2B00C28869 /* LibDCSwift in Frameworks */,
+				FA06EBE93023694E00C28869 /* LibDCSwift in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1A0000000000000000000002 = {
+			isa = PBXGroup;
+			children = (
+				1A0000000000000000000004 /* DiveCheck */,
+				1A0000000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1A0000000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1A0000000000000000000006 /* DiveCheck.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1A0000000000000000000004 /* DiveCheck */ = {
+			isa = PBXGroup;
+			children = (
+				FA06EBFA3023727A00C28869 /* Info.plist */,
+				1A0000000000000000000010 /* DiveCheckApp.swift */,
+				1D0000000000000000000001 /* Models */,
+				1D0000000000000000000002 /* Store */,
+				1D0000000000000000000003 /* Views */,
+				1A0000000000000000000015 /* Assets.xcassets */,
+			);
+			path = DiveCheck;
+			sourceTree = "<group>";
+		};
+		1D0000000000000000000001 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1B0000000000000000000008 /* Route.swift */,
+				1B0000000000000000000009 /* ItemField.swift */,
+				1B000000000000000000000A /* ChecklistItem.swift */,
+				1B000000000000000000000B /* Checklist.swift */,
+				1B000000000000000000000C /* DiveSubcategory.swift */,
+				1B000000000000000000000D /* DiveCategory.swift */,
+				1B0000000000000000000010 /* SavedChecklist.swift */,
+				1B0000000000000000000013 /* Equipment.swift */,
+				1B0000000000000000000014 /* DiveLogEntry.swift */,
+				1B000000000000000000001C /* SavedLocation.swift */,
+				1B000000000000000000001D /* DiveBuddy.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		1D0000000000000000000002 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				1B000000000000000000000E /* AppStore.swift */,
+				1B000000000000000000000F /* SeedData.swift */,
+			);
+			name = Store;
+			sourceTree = "<group>";
+		};
+		1D0000000000000000000003 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1A0000000000000000000011 /* ContentView.swift */,
+				1B0000000000000000000021 /* DiveChecklistsListView.swift */,
+				1B0000000000000000000001 /* CategoryDetailView.swift */,
+				1B0000000000000000000002 /* SubcategoryDetailView.swift */,
+				1B0000000000000000000003 /* ChecklistDetailView.swift */,
+				1B0000000000000000000004 /* ChecklistItemRow.swift */,
+				1B0000000000000000000005 /* AddChecklistItemView.swift */,
+				1B0000000000000000000006 /* AddChecklistView.swift */,
+				1B0000000000000000000007 /* AddSubcategoryView.swift */,
+				1B0000000000000000000011 /* HistoryListView.swift */,
+				1B0000000000000000000012 /* SavedChecklistDetailView.swift */,
+				1B0000000000000000000015 /* EquipmentLockerListView.swift */,
+				1B0000000000000000000016 /* EquipmentDetailView.swift */,
+				1B0000000000000000000017 /* AddEquipmentView.swift */,
+				1B0000000000000000000018 /* AddServiceRecordView.swift */,
+				1B0000000000000000000019 /* DiveLogListView.swift */,
+				1B000000000000000000001A /* DiveLogDetailView.swift */,
+				1B000000000000000000001B /* EquipmentPickerView.swift */,
+				1B000000000000000000001E /* LocationPickerView.swift */,
+				1B000000000000000000001F /* BuddyPickerView.swift */,
+				1B0000000000000000000020 /* LabeledFields.swift */,
+				1B0000000000000000000022 /* SACCalculatorView.swift */,
+				1B0000000000000000000023 /* MODCalculatorView.swift */,
+				1B0000000000000000000024 /* PPO2CalculatorView.swift */,
+				1B0000000000000000000025 /* CalculatorsListView.swift */,
+				1B0000000000000000000026 /* BestMixCalculatorView.swift */,
+				1B0000000000000000000027 /* BluetoothDiveImportView.swift */,
+				1B0000000000000000000028 /* GarminFITImportView.swift */,
+				1B0000000000000000000029 /* GarminFITParser.swift */,
+				1B000000000000000000002A /* LocationsListView.swift */,
+				1B000000000000000000002B /* LocationDetailView.swift */,
+				1B000000000000000000002C /* EmergencyActionPlan.swift */,
+				1B000000000000000000002D /* EmergencyActionPlansListView.swift */,
+				1B000000000000000000002E /* EAPDetailView.swift */,
+				1B000000000000000000002F /* UnitConversion.swift */,
+				1B0000000000000000000030 /* PlanMenuView.swift */,
+				1B0000000000000000000031 /* DivesMenuView.swift */,
+				1B0000000000000000000032 /* EquipmentMenuView.swift */,
+				1B0000000000000000000033 /* PlaceholderToolView.swift */,
+				1B0000000000000000000034 /* SettingsView.swift */,
+				1B0000000000000000000035 /* StatisticsView.swift */,
+				1B0000000000000000000036 /* MaintenanceScheduleView.swift */,
+				1B0000000000000000000037 /* ServiceHistoryView.swift */,
+				1B0000000000000000000038 /* PhoneFormatting.swift */,
+				1B0000000000000000000039 /* CloudSync.swift */,
+				1B0000000000000000000040 /* DiveCheck.entitlements */,
+				1B0000000000000000000041 /* Certification.swift */,
+				1B0000000000000000000042 /* DiverMedicalID.swift */,
+				1B0000000000000000000043 /* CertificationsListView.swift */,
+				1B0000000000000000000044 /* CertificationDetailView.swift */,
+				1B0000000000000000000045 /* DiverMedicalIDView.swift */,
+				1B0000000000000000000046 /* LocationServices.swift */,
+				1B0000000000000000000047 /* DiveSiteMapView.swift */,
+				1B0000000000000000000048 /* SACCalculation.swift */,
+				1B0000000000000000000049 /* NotificationScheduler.swift */,
+				1B0000000000000000000050 /* EAPPDFRenderer.swift */,
+				1B0000000000000000000051 /* ShareSheet.swift */,
+				1B0000000000000000000052 /* PhotoStorage.swift */,
+				1B0000000000000000000053 /* DiveComputer.swift */,
+				1B0000000000000000000054 /* DiveComputersListView.swift */,
+				1B0000000000000000000055 /* DiveComputerDetailView.swift */,
+				1B0000000000000000000056 /* DiveComputerPickerView.swift */,
+				1B0000000000000000000057 /* DiveLogBulkEdit.swift */,
+				1B0000000000000000000058 /* BulkEditDiveLogView.swift */,
+				1B0000000000000000000059 /* CameraCapture.swift */,
+				1B000000000000000000005A /* EADCalculatorView.swift */,
+				1B000000000000000000005B /* GasTimeCalculatorView.swift */,
+				1B0000000000000000000072 /* TankFillCalculatorView.swift */,
+				1B000000000000000000005C /* MinimumGasCalculatorView.swift */,
+				1B000000000000000000005D /* CNSOxygenCalculatorView.swift */,
+				1B000000000000000000005E /* WeightCheckCalculatorView.swift */,
+				1B000000000000000000005F /* ENDCalculatorView.swift */,
+				1B0000000000000000000060 /* WalletMenuView.swift */,
+				1B0000000000000000000061 /* DiverMedicalIDPDFRenderer.swift */,
+				1B0000000000000000000062 /* DocumentStorage.swift */,
+				1B0000000000000000000063 /* DocumentPreview.swift */,
+				1B0000000000000000000064 /* FullScreenImageViewer.swift */,
+				1B0000000000000000000065 /* DisclaimerView.swift */,
+				1B0000000000000000000066 /* TrainingAgency.swift */,
+				1B0000000000000000000067 /* TrainingCertification.swift */,
+				1B0000000000000000000068 /* TrainingSeedData.swift */,
+				1B0000000000000000000069 /* TrainingAgenciesListView.swift */,
+				1B000000000000000000006A /* TrainingCertificationsListView.swift */,
+				1B000000000000000000006B /* TrainingCertificationDetailView.swift */,
+				1B000000000000000000006C /* TrainingCandidate.swift */,
+				1B000000000000000000006D /* TrainingRosterProgram.swift */,
+				1B000000000000000000006E /* DivemasterSeedData.swift */,
+				1B000000000000000000006F /* TrainingCandidatesListView.swift */,
+				1B0000000000000000000070 /* AddTrainingCandidateView.swift */,
+				1B0000000000000000000071 /* TrainingCandidateDetailView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1A0000000000000000000005 /* DiveCheck */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A0000000000000000000007 /* Build configuration list for PBXNativeTarget "DiveCheck" */;
+			buildPhases = (
+				1A000000000000000000000D /* Sources */,
+				1A000000000000000000000E /* Frameworks */,
+				1A000000000000000000000F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DiveCheck;
+			productName = DiveCheck;
+			productReference = 1A0000000000000000000006 /* DiveCheck.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1A0000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 2700;
+				TargetAttributes = {
+					1A0000000000000000000005 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 1A0000000000000000000008 /* Build configuration list for PBXProject "DiveCheck" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1A0000000000000000000002;
+			packageReferences = (
+				FA06EBF230236A2B00C28869 /* XCRemoteSwiftPackageReference "libdc-swift" */,
+				FA06EBF730236E4400C28869 /* XCRemoteSwiftPackageReference "fit-objective-c-sdk" */,
+			);
+			productRefGroup = 1A0000000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1A0000000000000000000005 /* DiveCheck */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1A000000000000000000000F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A0000000000000000000025 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1A000000000000000000000D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A0000000000000000000020 /* DiveCheckApp.swift in Sources */,
+				1A0000000000000000000021 /* ContentView.swift in Sources */,
+				1C0000000000000000000001 /* CategoryDetailView.swift in Sources */,
+				1C0000000000000000000002 /* SubcategoryDetailView.swift in Sources */,
+				1C0000000000000000000003 /* ChecklistDetailView.swift in Sources */,
+				1C0000000000000000000004 /* ChecklistItemRow.swift in Sources */,
+				1C0000000000000000000005 /* AddChecklistItemView.swift in Sources */,
+				1C0000000000000000000006 /* AddChecklistView.swift in Sources */,
+				1C0000000000000000000007 /* AddSubcategoryView.swift in Sources */,
+				1C0000000000000000000008 /* Route.swift in Sources */,
+				1C0000000000000000000009 /* ItemField.swift in Sources */,
+				1C000000000000000000000A /* ChecklistItem.swift in Sources */,
+				1C000000000000000000000B /* Checklist.swift in Sources */,
+				1C000000000000000000000C /* DiveSubcategory.swift in Sources */,
+				1C000000000000000000000D /* DiveCategory.swift in Sources */,
+				1C000000000000000000000E /* AppStore.swift in Sources */,
+				1C000000000000000000000F /* SeedData.swift in Sources */,
+				1C0000000000000000000010 /* SavedChecklist.swift in Sources */,
+				1C0000000000000000000011 /* HistoryListView.swift in Sources */,
+				1C0000000000000000000012 /* SavedChecklistDetailView.swift in Sources */,
+				1C0000000000000000000013 /* Equipment.swift in Sources */,
+				1C0000000000000000000014 /* DiveLogEntry.swift in Sources */,
+				1C0000000000000000000015 /* EquipmentLockerListView.swift in Sources */,
+				1C0000000000000000000016 /* EquipmentDetailView.swift in Sources */,
+				1C0000000000000000000017 /* AddEquipmentView.swift in Sources */,
+				1C0000000000000000000018 /* AddServiceRecordView.swift in Sources */,
+				1C0000000000000000000019 /* DiveLogListView.swift in Sources */,
+				1C000000000000000000001A /* DiveLogDetailView.swift in Sources */,
+				1C000000000000000000001B /* EquipmentPickerView.swift in Sources */,
+				1C000000000000000000001C /* SavedLocation.swift in Sources */,
+				1C000000000000000000001D /* DiveBuddy.swift in Sources */,
+				1C000000000000000000001E /* LocationPickerView.swift in Sources */,
+				1C000000000000000000001F /* BuddyPickerView.swift in Sources */,
+				1C0000000000000000000020 /* LabeledFields.swift in Sources */,
+				1C0000000000000000000021 /* DiveChecklistsListView.swift in Sources */,
+				1C0000000000000000000022 /* SACCalculatorView.swift in Sources */,
+				1C0000000000000000000023 /* MODCalculatorView.swift in Sources */,
+				1C0000000000000000000024 /* PPO2CalculatorView.swift in Sources */,
+				1C0000000000000000000025 /* CalculatorsListView.swift in Sources */,
+				1C0000000000000000000026 /* BestMixCalculatorView.swift in Sources */,
+				1C0000000000000000000027 /* BluetoothDiveImportView.swift in Sources */,
+				1C0000000000000000000028 /* GarminFITImportView.swift in Sources */,
+				1C0000000000000000000029 /* GarminFITParser.swift in Sources */,
+				1C000000000000000000002A /* LocationsListView.swift in Sources */,
+				1C000000000000000000002B /* LocationDetailView.swift in Sources */,
+				1C000000000000000000002C /* EmergencyActionPlan.swift in Sources */,
+				1C000000000000000000002D /* EmergencyActionPlansListView.swift in Sources */,
+				1C000000000000000000002E /* EAPDetailView.swift in Sources */,
+				1C000000000000000000002F /* UnitConversion.swift in Sources */,
+				1C0000000000000000000030 /* PlanMenuView.swift in Sources */,
+				1C0000000000000000000031 /* DivesMenuView.swift in Sources */,
+				1C0000000000000000000032 /* EquipmentMenuView.swift in Sources */,
+				1C0000000000000000000033 /* PlaceholderToolView.swift in Sources */,
+				1C0000000000000000000034 /* SettingsView.swift in Sources */,
+				1C0000000000000000000035 /* StatisticsView.swift in Sources */,
+				1C0000000000000000000036 /* MaintenanceScheduleView.swift in Sources */,
+				1C0000000000000000000037 /* ServiceHistoryView.swift in Sources */,
+				1C0000000000000000000038 /* PhoneFormatting.swift in Sources */,
+				1C0000000000000000000039 /* CloudSync.swift in Sources */,
+				1C0000000000000000000041 /* Certification.swift in Sources */,
+				1C0000000000000000000042 /* DiverMedicalID.swift in Sources */,
+				1C0000000000000000000043 /* CertificationsListView.swift in Sources */,
+				1C0000000000000000000044 /* CertificationDetailView.swift in Sources */,
+				1C0000000000000000000045 /* DiverMedicalIDView.swift in Sources */,
+				1C0000000000000000000046 /* LocationServices.swift in Sources */,
+				1C0000000000000000000047 /* DiveSiteMapView.swift in Sources */,
+				1C0000000000000000000048 /* SACCalculation.swift in Sources */,
+				1C0000000000000000000049 /* NotificationScheduler.swift in Sources */,
+				1C0000000000000000000050 /* EAPPDFRenderer.swift in Sources */,
+				1C0000000000000000000051 /* ShareSheet.swift in Sources */,
+				1C0000000000000000000052 /* PhotoStorage.swift in Sources */,
+				1C0000000000000000000053 /* DiveComputer.swift in Sources */,
+				1C0000000000000000000054 /* DiveComputersListView.swift in Sources */,
+				1C0000000000000000000055 /* DiveComputerDetailView.swift in Sources */,
+				1C0000000000000000000056 /* DiveComputerPickerView.swift in Sources */,
+				1C0000000000000000000057 /* DiveLogBulkEdit.swift in Sources */,
+				1C0000000000000000000058 /* BulkEditDiveLogView.swift in Sources */,
+				1C0000000000000000000059 /* CameraCapture.swift in Sources */,
+				1C000000000000000000005A /* EADCalculatorView.swift in Sources */,
+				1C000000000000000000005B /* GasTimeCalculatorView.swift in Sources */,
+				1C0000000000000000000072 /* TankFillCalculatorView.swift in Sources */,
+				1C000000000000000000005C /* MinimumGasCalculatorView.swift in Sources */,
+				1C000000000000000000005D /* CNSOxygenCalculatorView.swift in Sources */,
+				1C000000000000000000005E /* WeightCheckCalculatorView.swift in Sources */,
+				1C000000000000000000005F /* ENDCalculatorView.swift in Sources */,
+				1C0000000000000000000060 /* WalletMenuView.swift in Sources */,
+				1C0000000000000000000061 /* DiverMedicalIDPDFRenderer.swift in Sources */,
+				1C0000000000000000000062 /* DocumentStorage.swift in Sources */,
+				1C0000000000000000000063 /* DocumentPreview.swift in Sources */,
+				1C0000000000000000000064 /* FullScreenImageViewer.swift in Sources */,
+				1C0000000000000000000065 /* DisclaimerView.swift in Sources */,
+				1C0000000000000000000066 /* TrainingAgency.swift in Sources */,
+				1C0000000000000000000067 /* TrainingCertification.swift in Sources */,
+				1C0000000000000000000068 /* TrainingSeedData.swift in Sources */,
+				1C0000000000000000000069 /* TrainingAgenciesListView.swift in Sources */,
+				1C000000000000000000006A /* TrainingCertificationsListView.swift in Sources */,
+				1C000000000000000000006B /* TrainingCertificationDetailView.swift in Sources */,
+				1C000000000000000000006C /* TrainingCandidate.swift in Sources */,
+				1C000000000000000000006D /* TrainingRosterProgram.swift in Sources */,
+				1C000000000000000000006E /* DivemasterSeedData.swift in Sources */,
+				1C000000000000000000006F /* TrainingCandidatesListView.swift in Sources */,
+				1C0000000000000000000070 /* AddTrainingCandidateView.swift in Sources */,
+				1C0000000000000000000071 /* TrainingCandidateDetailView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1A0000000000000000000009 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING_PROBLEMS = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1A000000000000000000000A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING_PROBLEMS = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1A000000000000000000000B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = Z2DPJCQPAL;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DiveCheck/Info.plist;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "DiveCheck uses Bluetooth to connect to your Shearwater dive computer and download dive logs directly into your dive log.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "DiveCheck can use your camera to take a photo of a certification card so it's saved with that certification.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "DiveCheck can use your current location to pin a dive Location on the map when you're adding or editing it.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.billmitlehner.divecheck.personal;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1A000000000000000000000C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = Z2DPJCQPAL;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DiveCheck/Info.plist;
+				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "DiveCheck uses Bluetooth to connect to your Shearwater dive computer and download dive logs directly into your dive log.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "DiveCheck can use your camera to take a photo of a certification card so it's saved with that certification.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "DiveCheck can use your current location to pin a dive Location on the map when you're adding or editing it.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.billmitlehner.divecheck.personal;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1A0000000000000000000007 /* Build configuration list for PBXNativeTarget "DiveCheck" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A000000000000000000000B /* Debug */,
+				1A000000000000000000000C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A0000000000000000000008 /* Build configuration list for PBXProject "DiveCheck" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A0000000000000000000009 /* Debug */,
+				1A000000000000000000000A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FA06EBE53023694E00C28869 /* XCRemoteSwiftPackageReference "libdc-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/deepsealabs/libdc-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.9.0;
+			};
+		};
+		FA06EBF230236A2B00C28869 /* XCRemoteSwiftPackageReference "libdc-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/deepsealabs/libdc-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.9.0;
+			};
+		};
+		FA06EBF730236E4400C28869 /* XCRemoteSwiftPackageReference "fit-objective-c-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/garmin/fit-objective-c-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 21.212.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FA06EBE83023694E00C28869 /* LibDCSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA06EBE53023694E00C28869 /* XCRemoteSwiftPackageReference "libdc-swift" */;
+			productName = LibDCSwift;
+		};
+		FA06EBF530236A2B00C28869 /* LibDCSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA06EBF230236A2B00C28869 /* XCRemoteSwiftPackageReference "libdc-swift" */;
+			productName = LibDCSwift;
+		};
+		FA06EBF830236E4400C28869 /* FIT */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA06EBF730236E4400C28869 /* XCRemoteSwiftPackageReference "fit-objective-c-sdk" */;
+			productName = FIT;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 1A0000000000000000000001 /* Project object */;
+}
