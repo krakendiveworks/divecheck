@@ -1,0 +1,17 @@
+{
+  "name": "divecheck-pass-service",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Small signing service that turns a DiveCheck certification into a signed Apple Wallet .pkpass. Exists only because iOS has no public API for the PKCS#7/CMS signature a pass requires -- Apple's own guidance is to sign passes on a backend, not on-device.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "passkit-generator": "^3.3.1"
+  }
+}
