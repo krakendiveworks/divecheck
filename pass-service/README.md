@@ -34,10 +34,21 @@ certificates aren't available on the free tier).
    the private key from step 2), right-click → **Export** → save as
    `Certificates.p12`, set a password when prompted (remember it -- you'll
    need it below).
-5. Download Apple's WWDR (Worldwide Developer Relations) intermediate
-   certificate from [Apple's PKI page](https://www.apple.com/certificateauthority/)
-   -- get the current "Worldwide Developer Relations - G4" (or whatever the
-   current one is named) `.cer` file.
+5. Get the WWDR (Worldwide Developer Relations) intermediate certificate --
+   **export it from Keychain Access rather than downloading one from
+   Apple's PKI page.** Apple currently lists five different WWDR
+   generations (G2 through G6) with no indication of which one actually
+   issued your Pass Type ID certificate, and using the wrong one produces
+   exactly the failure mode this service is prone to: signing succeeds
+   (no error from the service), but Wallet silently rejects the pass
+   because the certificate chain doesn't actually link up. Installing your
+   `.cer` in step 4 already pulled down the correct intermediate
+   automatically, so: in Keychain Access, find **Apple Worldwide Developer
+   Relations Certification Authority** under **My Certificates** or
+   **Certificates** (it'll be the one your Pass Type ID certificate is
+   nested under/paired with) → right-click → **Export** → save as
+   `AppleWWDR.cer`. This guarantees it matches your actual signer
+   certificate's chain.
 
 ## 2. Convert the certificates to what the service expects
 
@@ -46,7 +57,7 @@ from step 1 (replace `YOUR_P12_PASSWORD` with the password you set):
 
 ```bash
 # WWDR intermediate cert: DER -> PEM
-openssl x509 -inform der -in AppleWWDRCAG4.cer -out wwdr.pem
+openssl x509 -inform der -in AppleWWDR.cer -out wwdr.pem
 
 # Your signer certificate (public half) out of the .p12
 openssl pkcs12 -in Certificates.p12 -clcerts -nokeys -legacy \
@@ -123,3 +134,32 @@ Body:
 Only `courseName` is required. Response is the raw `.pkpass` binary
 (`application/vnd.apple.pkpass`) on success, or a JSON `{"error": "..."}`
 with a 4xx/5xx status on failure.
+
+## Troubleshooting: "Add to Apple Wallet" does nothing, no error shown
+
+This means the service returned a 200 with pass bytes, but Wallet rejected
+those bytes once they got to the phone -- a certificate chain problem the
+service itself can't detect (it just signs with whatever certs it's given;
+it doesn't verify they're the *right* certs). The app now surfaces this as
+an alert instead of failing silently, so update to the latest build first.
+Once you see the actual error, the usual causes, roughly in order of
+likelihood:
+
+- **Wrong WWDR intermediate.** See step 1.5 above -- export it from
+  Keychain Access, don't download a generation number blind.
+- **`TEAM_IDENTIFIER` doesn't match the team that actually issued the Pass
+  Type ID certificate.** If you have more than one Apple Developer team
+  (e.g. you switched from a free Personal Team to a paid one), double
+  check the Team ID in Render's env var against Account → Membership for
+  the team you created the Pass Type ID under.
+- **`PASS_TYPE_IDENTIFIER` doesn't exactly match the Pass Type ID string**
+  registered on developer.apple.com (typos, trailing characters, etc.).
+- **The signer certificate and key don't match** (e.g. copy-paste error
+  when base64-encoding, or the `.p12` export in step 1.4 grabbed the wrong
+  certificate if more than one was in Keychain Access).
+
+If you want to sanity-check the service's output independent of the app,
+download a `.pkpass` from it directly (e.g. `curl` the endpoint with a
+test body, save the response as `test.pkpass`) and AirDrop that file to
+your iPhone -- Wallet will show the same validation error there, often
+with more detail than what reaches the app.
