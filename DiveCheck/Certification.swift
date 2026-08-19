@@ -35,6 +35,15 @@ struct Certification: Identifiable, Codable, Equatable {
     /// decoder.
     var cardImageFilename: String?
 
+    /// Filename of an uploaded PDF copy of the certification (a scanned
+    /// card, e-card, or completion certificate), stored on disk via
+    /// DocumentStorage (see DocumentStorage.swift) -- same file-on-disk-by-
+    /// filename pattern as `cardImageFilename` above, just for a document
+    /// instead of a photo. Independent of `cardImageFilename`: a
+    /// certification can have a photo, a PDF, both, or neither.
+    var cardDocumentFilename: String?
+    var cardDocumentUploadedAt: Date?
+
     init(
         id: UUID = UUID(),
         agency: String,
@@ -44,7 +53,9 @@ struct Certification: Identifiable, Codable, Equatable {
         instructorOrFacility: String = "",
         expirationDate: Date? = nil,
         notes: String = "",
-        cardImageFilename: String? = nil
+        cardImageFilename: String? = nil,
+        cardDocumentFilename: String? = nil,
+        cardDocumentUploadedAt: Date? = nil
     ) {
         self.id = id
         self.agency = agency
@@ -55,6 +66,8 @@ struct Certification: Identifiable, Codable, Equatable {
         self.expirationDate = expirationDate
         self.notes = notes
         self.cardImageFilename = cardImageFilename
+        self.cardDocumentFilename = cardDocumentFilename
+        self.cardDocumentUploadedAt = cardDocumentUploadedAt
     }
 
     /// True once `expirationDate` has passed. Certs with no expiration date

@@ -1,6 +1,7 @@
 import SwiftUI
 import PhotosUI
 import UIKit
+import UniformTypeIdentifiers
 
 /// Edits a single diver certification.
 struct CertificationDetailView: View {
@@ -10,6 +11,10 @@ struct CertificationDetailView: View {
     @State private var photoPickerItem: PhotosPickerItem?
     @State private var isShowingCamera = false
     @State private var isShowingFullScreenImage = false
+    @State private var isShowingSavedConfirmation = false
+    @State private var isShowingDocumentImporter = false
+    @State private var isShowingDocumentPreview = false
+    @State private var shareItems: [Any]?
     /// True when the Agency picker is on "Other" -- either the diver chose
     /// it explicitly, or the saved `agency` string doesn't match any of
     /// `Certification.knownAgencies` (e.g. an existing certification typed
@@ -48,6 +53,14 @@ struct CertificationDetailView: View {
         Form {
             Section("Card Image") {
                 cardImageSection
+            }
+
+            Section {
+                cardDocumentSection
+            } header: {
+                Text("Certification Document (PDF)")
+            } footer: {
+                Text("Upload a PDF of the certification -- a scanned card, e-card, or completion certificate -- in addition to (or instead of) a photo above.")
             }
 
             Section("Certification") {
@@ -109,6 +122,46 @@ struct CertificationDetailView: View {
         }
         .navigationTitle(certification.wrappedValue.courseName.isEmpty ? "Certification" : certification.wrappedValue.courseName)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                Button {
+                    store.saveCertificationSnapshot(certification.wrappedValue)
+                    isShowingSavedConfirmation = true
+                } label: {
+                    Label("Save to History", systemImage: "tray.and.arrow.down")
+                }
+            }
+        }
+        .alert("Saved to History", isPresented: $isShowingSavedConfirmation) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("A copy of this certification as it stands right now was saved. View it anytime from Saved Certifications on the Certifications screen — it stays fully editable there too.")
+        }
+        .background(ShareSheetPresenter(items: $shareItems))
+        .fileImporter(isPresented: $isShowingDocumentImporter, allowedContentTypes: [.pdf]) { result in
+            handleDocumentImportResult(result)
+        }
+        .sheet(isPresented: $isShowingDocumentPreview) {
+            if let filename = certification.wrappedValue.cardDocumentFilename {
+                // Wrapped in our own NavigationStack with an explicit Done
+                // button for the same reason as the WRSTC form preview in
+                // DiverMedicalIDView -- QLPreviewController doesn't get a
+                // free "Done" button when embedded as a SwiftUI .sheet's
+                // content rather than presented directly by UIKit.
+                NavigationStack {
+                    DocumentPreview(url: DocumentStorage.url(for: filename))
+                        .navigationTitle("Certification Document")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Done") {
+                                    isShowingDocumentPreview = false
+                                }
+                            }
+                        }
+                }
+            }
+        }
         .onAppear {
             if cardImage == nil, let filename = certification.wrappedValue.cardImageFilename {
                 cardImage = PhotoStorage.load(filename)
@@ -194,6 +247,57 @@ struct CertificationDetailView: View {
         }
     }
 
+    @ViewBuilder
+    private var cardDocumentSection: some View {
+        if let filename = certification.wrappedValue.cardDocumentFilename {
+            HStack {
+                Image(systemName: "doc.richtext.fill")
+                    .foregroundStyle(.blue)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Certification PDF on File")
+                        .font(.body.weight(.medium))
+                    if let uploadedAt = certification.wrappedValue.cardDocumentUploadedAt {
+                        Text("Uploaded \(uploadedAt.formatted(date: .abbreviated, time: .omitted))")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Spacer()
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                isShowingDocumentPreview = true
+            }
+
+            Button {
+                isShowingDocumentPreview = true
+            } label: {
+                Label("View", systemImage: "eye")
+            }
+            Button {
+                shareItems = [DocumentStorage.url(for: filename)]
+            } label: {
+                Label("Export", systemImage: "square.and.arrow.up")
+            }
+            Button {
+                isShowingDocumentImporter = true
+            } label: {
+                Label("Replace", systemImage: "arrow.triangle.2.circlepath")
+            }
+            Button(role: .destructive) {
+                removeCardDocument()
+            } label: {
+                Label("Remove", systemImage: "trash")
+            }
+        } else {
+            Button {
+                isShowingDocumentImporter = true
+            } label: {
+                Label("Upload PDF", systemImage: "doc.badge.plus")
+            }
+        }
+    }
+
     /// Writes freshly-picked photo data to disk via PhotoStorage, deletes
     /// whatever image previously occupied this slot (if any), and points
     /// the certification at the new filename.
@@ -222,6 +326,27 @@ struct CertificationDetailView: View {
         }
         certification.wrappedValue.cardImageFilename = nil
         cardImage = nil
+    }
+
+    /// Saves a newly-picked PDF to disk via DocumentStorage, deletes
+    /// whatever document previously occupied this slot (if any), and points
+    /// the certification at the new filename -- mirrors
+    /// DiverMedicalIDView's handleFileImportResult.
+    private func handleDocumentImportResult(_ result: Result<URL, Error>) {
+        guard case .success(let sourceURL) = result, let filename = DocumentStorage.save(from: sourceURL) else { return }
+        if let oldFilename = certification.wrappedValue.cardDocumentFilename {
+            DocumentStorage.delete(oldFilename)
+        }
+        certification.wrappedValue.cardDocumentFilename = filename
+        certification.wrappedValue.cardDocumentUploadedAt = Date()
+    }
+
+    private func removeCardDocument() {
+        if let filename = certification.wrappedValue.cardDocumentFilename {
+            DocumentStorage.delete(filename)
+        }
+        certification.wrappedValue.cardDocumentFilename = nil
+        certification.wrappedValue.cardDocumentUploadedAt = nil
     }
 }
 

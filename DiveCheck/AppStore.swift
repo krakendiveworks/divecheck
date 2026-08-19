@@ -37,6 +37,12 @@ final class AppStore: ObservableObject {
         didSet { saveCertifications() }
     }
 
+    /// Saved snapshots of certifications -- "Save to History" on
+    /// CertificationDetailView, mirroring `savedChecklists` above.
+    @Published var savedCertifications: [SavedCertification] {
+        didSet { saveSavedCertifications() }
+    }
+
     /// Training section content (Settings > Training toggle) -- grouped by
     /// agency, then certification level, then dive/skill checklist. Its own
     /// independent tree with its own reseed-version gate (see
@@ -92,6 +98,12 @@ final class AppStore: ObservableObject {
     /// fills one in.
     @Published var diverMedicalID: DiverMedicalID? {
         didSet { saveMedicalID() }
+    }
+
+    /// Saved snapshots of the Diver Medical ID card -- "Save to History"
+    /// on DiverMedicalIDView, mirroring `savedChecklists` above.
+    @Published var savedDiverMedicalIDs: [SavedDiverMedicalID] {
+        didSet { saveSavedDiverMedicalIDs() }
     }
 
     /// Default units applied to new Dive Log entries only -- changing a
@@ -150,6 +162,7 @@ final class AppStore: ObservableObject {
     private let buddiesKey = "DiveCheck.buddies.v1"
     private let eapKey = "DiveCheck.eap.v1"
     private let certificationsKey = "DiveCheck.certifications.v1"
+    private let savedCertificationsKey = "DiveCheck.savedCertifications.v1"
     /// Also local-only (see `storageKey` above) -- same reasoning, and the
     /// Training tree is the other half of what was pushing the iCloud
     /// key-value store toward its quota.
@@ -160,6 +173,7 @@ final class AppStore: ObservableObject {
     private let trainingProfessionalNumberKey = "DiveCheck.trainingProfessionalNumber"
     private let diveComputersKey = "DiveCheck.divecomputers.v1"
     private let medicalIDKey = "DiveCheck.medicalID.v1"
+    private let savedMedicalIDsKey = "DiveCheck.savedMedicalIDs.v1"
     private let defaultDepthUnitKey = "DiveCheck.defaultDepthUnit"
     private let defaultTemperatureUnitKey = "DiveCheck.defaultTemperatureUnit"
     private let defaultWeightUnitKey = "DiveCheck.defaultWeightUnit"
@@ -205,6 +219,7 @@ final class AppStore: ObservableObject {
         savedBuddies = CloudSync.load([DiveBuddy].self, forKey: buddiesKey) ?? []
         emergencyActionPlans = CloudSync.load([EmergencyActionPlan].self, forKey: eapKey) ?? []
         certifications = CloudSync.load([Certification].self, forKey: certificationsKey) ?? []
+        savedCertifications = CloudSync.load([SavedCertification].self, forKey: savedCertificationsKey) ?? []
 
         // Same reseed-gate idea as the main checklist tree above, but with
         // its own version key so bumping one doesn't force a reseed of the
@@ -223,6 +238,7 @@ final class AppStore: ObservableObject {
 
         diveComputers = CloudSync.load([DiveComputer].self, forKey: diveComputersKey) ?? []
         diverMedicalID = CloudSync.load(DiverMedicalID.self, forKey: medicalIDKey)
+        savedDiverMedicalIDs = CloudSync.load([SavedDiverMedicalID].self, forKey: savedMedicalIDsKey) ?? []
 
         // Falls back to the same defaults DiveLogEntry itself already used
         // (feet/Fahrenheit/lbs) so nothing changes for anyone who hasn't
@@ -281,6 +297,8 @@ final class AppStore: ObservableObject {
                 if let decoded = CloudSync.load([EmergencyActionPlan].self, forKey: eapKey) { emergencyActionPlans = decoded }
             case certificationsKey:
                 if let decoded = CloudSync.load([Certification].self, forKey: certificationsKey) { certifications = decoded }
+            case savedCertificationsKey:
+                if let decoded = CloudSync.load([SavedCertification].self, forKey: savedCertificationsKey) { savedCertifications = decoded }
             case trainingSectionEnabledKey:
                 if let decoded = CloudSync.loadBool(forKey: trainingSectionEnabledKey) { isTrainingSectionEnabled = decoded }
             case trainingProfessionalAgencyKey:
@@ -291,6 +309,8 @@ final class AppStore: ObservableObject {
                 if let decoded = CloudSync.load([DiveComputer].self, forKey: diveComputersKey) { diveComputers = decoded }
             case medicalIDKey:
                 diverMedicalID = CloudSync.load(DiverMedicalID.self, forKey: medicalIDKey)
+            case savedMedicalIDsKey:
+                if let decoded = CloudSync.load([SavedDiverMedicalID].self, forKey: savedMedicalIDsKey) { savedDiverMedicalIDs = decoded }
             case defaultDepthUnitKey:
                 if let decoded = CloudSync.loadString(forKey: defaultDepthUnitKey).flatMap(DepthUnit.init(rawValue:)) { defaultDepthUnit = decoded }
             case defaultTemperatureUnitKey:
@@ -362,6 +382,10 @@ final class AppStore: ObservableObject {
         CloudSync.save(certifications, forKey: certificationsKey)
     }
 
+    private func saveSavedCertifications() {
+        CloudSync.save(savedCertifications, forKey: savedCertificationsKey)
+    }
+
     private func saveTrainingAgencies() {
         CloudSync.saveLocalOnly(trainingAgencies, forKey: trainingAgenciesKey)
     }
@@ -377,6 +401,10 @@ final class AppStore: ObservableObject {
             UserDefaults.standard.removeObject(forKey: medicalIDKey)
             CloudSync.store.removeObject(forKey: medicalIDKey)
         }
+    }
+
+    private func saveSavedDiverMedicalIDs() {
+        CloudSync.save(savedDiverMedicalIDs, forKey: savedMedicalIDsKey)
     }
 
     // MARK: - Lookups
@@ -904,8 +932,13 @@ final class AppStore: ObservableObject {
     }
 
     func deleteCertification(_ id: UUID) {
-        if let certification = certifications.first(where: { $0.id == id }), let filename = certification.cardImageFilename {
-            PhotoStorage.delete(filename)
+        if let certification = certifications.first(where: { $0.id == id }) {
+            if let filename = certification.cardImageFilename {
+                PhotoStorage.delete(filename)
+            }
+            if let filename = certification.cardDocumentFilename {
+                DocumentStorage.delete(filename)
+            }
         }
         certifications.removeAll { $0.id == id }
     }
@@ -919,6 +952,51 @@ final class AppStore: ObservableObject {
             set: { newValue in
                 guard let idx = self.certifications.firstIndex(where: { $0.id == id }) else { return }
                 self.certifications[idx] = newValue
+            }
+        )
+    }
+
+    // MARK: - Saved Certifications
+
+    /// Freezes a copy of the certification and adds it to history. If the
+    /// certification has a card image and/or an uploaded PDF, the snapshot
+    /// gets its own independent copy of each file (see PhotoStorage.duplicate
+    /// / DocumentStorage.duplicate) so a later replace/remove on the live
+    /// certification's photo or document doesn't affect what was saved.
+    func saveCertificationSnapshot(_ certification: Certification) {
+        var copy = certification
+        if let filename = certification.cardImageFilename {
+            copy.cardImageFilename = PhotoStorage.duplicate(filename)
+        }
+        if let filename = certification.cardDocumentFilename {
+            copy.cardDocumentFilename = DocumentStorage.duplicate(filename)
+        }
+        let snapshot = SavedCertification(certification: copy)
+        savedCertifications.insert(snapshot, at: 0)
+    }
+
+    func deleteSavedCertification(_ id: UUID) {
+        if let saved = savedCertifications.first(where: { $0.id == id }) {
+            if let filename = saved.certification.cardImageFilename {
+                PhotoStorage.delete(filename)
+            }
+            if let filename = saved.certification.cardDocumentFilename {
+                DocumentStorage.delete(filename)
+            }
+        }
+        savedCertifications.removeAll { $0.id == id }
+    }
+
+    /// Binding to a single saved certification, for editing/updating in
+    /// SavedCertificationDetailView.
+    func savedCertificationBinding(for id: UUID) -> Binding<SavedCertification> {
+        Binding<SavedCertification>(
+            get: {
+                self.savedCertifications.first { $0.id == id } ?? SavedCertification(certification: Certification(agency: "", courseName: ""))
+            },
+            set: { newValue in
+                guard let idx = self.savedCertifications.firstIndex(where: { $0.id == id }) else { return }
+                self.savedCertifications[idx] = newValue
             }
         )
     }
@@ -1012,6 +1090,43 @@ final class AppStore: ObservableObject {
             },
             set: { newValue in
                 self.diverMedicalID = newValue
+            }
+        )
+    }
+
+    // MARK: - Saved Diver Medical IDs
+
+    /// Freezes a copy of the Diver Medical ID card and adds it to history.
+    /// If the card has a WRSTC form on file, the snapshot gets its own
+    /// independent copy of that file (see DocumentStorage.duplicate) so a
+    /// later replace/remove on the live card's form doesn't affect what
+    /// was saved.
+    func saveDiverMedicalIDSnapshot(_ medicalID: DiverMedicalID) {
+        var copy = medicalID
+        if let filename = medicalID.wrstcFormFilename {
+            copy.wrstcFormFilename = DocumentStorage.duplicate(filename)
+        }
+        let snapshot = SavedDiverMedicalID(medicalID: copy)
+        savedDiverMedicalIDs.insert(snapshot, at: 0)
+    }
+
+    func deleteSavedDiverMedicalID(_ id: UUID) {
+        if let saved = savedDiverMedicalIDs.first(where: { $0.id == id }), let filename = saved.medicalID.wrstcFormFilename {
+            DocumentStorage.delete(filename)
+        }
+        savedDiverMedicalIDs.removeAll { $0.id == id }
+    }
+
+    /// Binding to a single saved Diver Medical ID, for editing/updating in
+    /// SavedDiverMedicalIDDetailView.
+    func savedDiverMedicalIDBinding(for id: UUID) -> Binding<SavedDiverMedicalID> {
+        Binding<SavedDiverMedicalID>(
+            get: {
+                self.savedDiverMedicalIDs.first { $0.id == id } ?? SavedDiverMedicalID(medicalID: DiverMedicalID())
+            },
+            set: { newValue in
+                guard let idx = self.savedDiverMedicalIDs.firstIndex(where: { $0.id == id }) else { return }
+                self.savedDiverMedicalIDs[idx] = newValue
             }
         )
     }
