@@ -62,9 +62,9 @@ struct iCloudDriveBackend: CloudSyncBackend {
     }
 
     func download(remoteName: String) async throws -> Data? {
-        let containerURL = try requireContainerURL()
-        let fileURL = containerURL.appendingPathComponent(remoteName)
-        guard FileManager.default.fileExists(atPath: fileURL.path) else { return nil }
+        _ = try requireContainerURL()
+        let contents = await Self.queryContainerContents()
+        guard let fileURL = contents[remoteName] else { return nil }
         // A file iCloud hasn't downloaded to this device yet shows up as a
         // placeholder -- ask for the real content and give it a moment to
         // arrive before reading.
@@ -80,13 +80,74 @@ struct iCloudDriveBackend: CloudSyncBackend {
     }
 
     func listRemoteFilenames() async throws -> Set<String> {
-        guard let containerURL else { return [] }
-        let files = (try? FileManager.default.contentsOfDirectory(at: containerURL, includingPropertiesForKeys: nil)) ?? []
-        return Set(files.map { $0.lastPathComponent })
+        guard containerURL != nil else { return [] }
+        return Set(await Self.queryContainerContents().keys)
     }
 
     func delete(remoteName: String) async throws {
         guard let containerURL else { return }
         try? FileManager.default.removeItem(at: containerURL.appendingPathComponent(remoteName))
+    }
+
+    /// Reliably discovers what's actually in the container using
+    /// NSMetadataQuery -- the Apple-recommended way to enumerate a
+    /// ubiquity container's contents -- rather than a plain
+    /// FileManager.fileExists/contentsOfDirectory call.
+    ///
+    /// This matters a lot more than it looks: the first time a given
+    /// device ever touches this container (e.g. a second device you just
+    /// installed the app on), iOS needs a moment to discover what's
+    /// already up there. A plain, immediate fileExists check can come
+    /// back "not found" during that window even though a file genuinely
+    /// exists in iCloud -- which previously made SyncManager.pull() think
+    /// "nothing's been synced from any device yet" and push that device's
+    /// own (near-empty, freshly-installed) state up as a *newer* snapshot,
+    /// overwriting the real data other devices had already synced. This
+    /// query properly waits for iOS's initial discovery to finish before
+    /// reporting what's there, closing that race.
+    private static func queryContainerContents() async -> [String: URL] {
+        await withCheckedContinuation { continuation in
+            let resumeLock = NSLock()
+            var didResume = false
+            func resumeOnce(_ value: [String: URL]) {
+                resumeLock.lock()
+                defer { resumeLock.unlock() }
+                guard !didResume else { return }
+                didResume = true
+                continuation.resume(returning: value)
+            }
+
+            let query = NSMetadataQuery()
+            query.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
+            query.predicate = NSPredicate(format: "%K LIKE '*'", NSMetadataItemFSNameKey)
+
+            var observer: NSObjectProtocol?
+            observer = NotificationCenter.default.addObserver(forName: .NSMetadataQueryDidFinishGathering, object: query, queue: .main) { _ in
+                query.disableUpdates()
+                var results: [String: URL] = [:]
+                for case let item as NSMetadataItem in query.results {
+                    if let url = item.value(forAttribute: NSMetadataItemURLKey) as? URL {
+                        results[url.lastPathComponent] = url
+                    }
+                }
+                query.stop()
+                if let observer { NotificationCenter.default.removeObserver(observer) }
+                resumeOnce(results)
+            }
+
+            DispatchQueue.main.async {
+                query.start()
+            }
+
+            // Safety net -- if the query never fires (iCloud completely
+            // unreachable, etc.), don't hang forever; report "nothing
+            // found" after a reasonable wait rather than blocking sync
+            // indefinitely.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
+                if let observer { NotificationCenter.default.removeObserver(observer) }
+                query.stop()
+                resumeOnce([:])
+            }
+        }
     }
 }
