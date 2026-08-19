@@ -57,7 +57,17 @@ final class SyncManager: ObservableObject {
 
     private init() {
         provider = CloudSync.loadString(forKey: Keys.provider).flatMap(SyncProvider.init(rawValue:)) ?? .none
-        if let stored = CloudSync.loadString(forKey: Keys.lastSyncedAt), let interval = Double(stored) {
+        // Deliberately UserDefaults only, NOT CloudSync -- this has to stay
+        // purely local to this device. It previously went through
+        // CloudSync.loadString/saveString like `provider` above, which
+        // also mirrors the value into iCloud's key-value store -- meaning
+        // a brand-new device would inherit another device's already-synced
+        // "last applied" timestamp before ever actually downloading and
+        // applying a snapshot itself. That made pull()'s newer-than check
+        // (below) conclude "already up to date" and silently skip applying
+        // real data on a fresh device -- exactly what happened testing on
+        // a new iPad after the phone was already syncing.
+        if let interval = UserDefaults.standard.object(forKey: Keys.lastSyncedAt) as? Double {
             lastSyncedAt = Date(timeIntervalSince1970: interval)
         }
         mediaAddedObserver = NotificationCenter.default.addObserver(forName: .diveCheckMediaFileAdded, object: nil, queue: .main) { [weak self] note in
@@ -201,7 +211,8 @@ final class SyncManager: ObservableObject {
     private func recordSuccessfulSync(at date: Date) {
         lastSyncedAt = date
         lastError = nil
-        CloudSync.saveString(String(date.timeIntervalSince1970), forKey: Keys.lastSyncedAt)
+        // Local-only -- see the doc comment on the matching read in init().
+        UserDefaults.standard.set(date.timeIntervalSince1970, forKey: Keys.lastSyncedAt)
     }
 
     // MARK: - Media files
