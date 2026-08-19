@@ -46,6 +46,7 @@ final class SyncManager: ObservableObject {
     private var pendingPushTask: Task<Void, Never>?
     private var mediaAddedObserver: NSObjectProtocol?
     private var mediaDeletedObserver: NSObjectProtocol?
+    private var providerChangeObserver: NSObjectProtocol?
 
     private enum Keys {
         static let provider = "DiveCheck.syncProvider"
@@ -65,12 +66,36 @@ final class SyncManager: ObservableObject {
         mediaDeletedObserver = NotificationCenter.default.addObserver(forName: .diveCheckMediaFileDeleted, object: nil, queue: .main) { [weak self] note in
             self?.handleMediaFileDeleted(note)
         }
+        // Picking a provider in Settings on one device pushes that choice
+        // up through CloudSync's iCloud key-value store (see `provider`'s
+        // didSet), same as any other setting -- but unlike AppStore's own
+        // persisted fields, nothing was listening for that choice arriving
+        // on a SECOND device. Without this, a fresh install (or the
+        // Simulator) would only pick up "this account already has iCloud
+        // Drive turned on" at the exact moment SyncManager.init() happens
+        // to run after the key-value store's initial download finishes --
+        // easy to miss on first launch, and never rechecked afterward.
+        // Mirrors AppStore's own cloudSyncObserver pattern below.
+        providerChangeObserver = NotificationCenter.default.addObserver(forName: NSUbiquitousKeyValueStore.didChangeExternallyNotification, object: CloudSync.store, queue: .main) { [weak self] notification in
+            self?.handleExternalProviderChange(notification)
+        }
         activateBackend()
     }
 
     deinit {
         if let mediaAddedObserver { NotificationCenter.default.removeObserver(mediaAddedObserver) }
         if let mediaDeletedObserver { NotificationCenter.default.removeObserver(mediaDeletedObserver) }
+        if let providerChangeObserver { NotificationCenter.default.removeObserver(providerChangeObserver) }
+    }
+
+    private func handleExternalProviderChange(_ notification: Notification) {
+        guard let userInfo = notification.userInfo,
+              let changedKeys = userInfo[NSUbiquitousKeyValueStoreChangedKeysKey] as? [String],
+              changedKeys.contains(Keys.provider),
+              let newProvider = CloudSync.loadString(forKey: Keys.provider).flatMap(SyncProvider.init(rawValue:)),
+              newProvider != provider
+        else { return }
+        provider = newProvider
     }
 
     // MARK: - Provider lifecycle
