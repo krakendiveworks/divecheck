@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 /// Default units applied to newly-created Dive Log entries. Purely a
 /// starting point -- every entry still has its own per-dive unit toggles
@@ -6,9 +7,11 @@ import SwiftUI
 /// dives already logged.
 struct SettingsView: View {
     @ObservedObject var store: AppStore
+    @ObservedObject private var syncManager = SyncManager.shared
     @State private var remindersAuthorized = false
     @State private var didCheckAuthorization = false
     @State private var isShowingProfessionalInfoSheet = false
+    @State private var googleSignInError: String?
 
     /// Whether the diver has already provided the agency/professional
     /// number gate required to turn Training on -- see `trainingToggleBinding`.
@@ -131,6 +134,14 @@ struct SettingsView: View {
                 Text("Shows a Training row on the main menu with certification skill requirements grouped by agency and certification level -- a checklist per skill with the official performance requirement noted underneath. This section is meant for instructors and divemasters tracking certification requirements, so turning it on requires entering the agency you're credentialed with and your professional/instructor number. Turning it off just hides the menu entry; nothing already checked off is lost.")
             }
 
+            Section {
+                backupSyncSection
+            } header: {
+                Text("Backup & Sync")
+            } footer: {
+                Text("Automatically backs up everything -- checklists, equipment, dive log, certifications (including uploaded photos and PDFs), Emergency Action Plans, Diver Medical ID, and training records -- to the cloud account you choose, so it's there if you get a new phone or want it on another device. Off by default. Picking iCloud Drive uses whichever iCloud account this device is signed into; Google Drive needs its own sign-in.")
+            }
+
             // Read-only record of the safety disclaimer the diver had to
             // accept before using the app -- see DisclaimerView.swift.
             // Nothing here is editable; there's no way to revoke
@@ -187,6 +198,115 @@ struct SettingsView: View {
                     store.isTrainingSectionEnabled = true
                 }
             )
+        }
+        .alert("Couldn't Sign In", isPresented: Binding(
+            get: { googleSignInError != nil },
+            set: { isPresented in if !isPresented { googleSignInError = nil } }
+        )) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(googleSignInError ?? "")
+        }
+    }
+
+    /// Whether GoogleDriveBackend.swift has actually been added to this
+    /// build -- it's delivered separately from the base project (see that
+    /// file's doc comment), so until it's added and set up, this stays
+    /// false and the Google Drive option explains what's needed instead of
+    /// offering a sign-in button that can't work yet.
+    private var isGoogleDriveAvailable: Bool {
+        SyncManager.googleDriveFactory != nil
+    }
+
+    private var isGoogleSignedIn: Bool {
+        SyncManager.googleIsSignedInHandler?() ?? false
+    }
+
+    @ViewBuilder
+    private var backupSyncSection: some View {
+        Picker("Provider", selection: $syncManager.provider) {
+            ForEach(SyncProvider.allCases, id: \.self) { provider in
+                Text(provider.displayName).tag(provider)
+            }
+        }
+        .pickerStyle(.segmented)
+
+        if syncManager.provider == .googleDrive {
+            if isGoogleDriveAvailable {
+                if isGoogleSignedIn {
+                    LabeledContent("Account", value: syncManager.accountLabel ?? "Signed in")
+                    Button("Sign Out", role: .destructive) {
+                        SyncManager.googleSignOutHandler?()
+                        syncManager.refreshAccountLabel()
+                    }
+                } else {
+                    Button {
+                        signInWithGoogle()
+                    } label: {
+                        Label("Sign in with Google", systemImage: "person.crop.circle.badge.checkmark")
+                    }
+                }
+            } else {
+                Label("Google Drive isn't set up in this build yet -- see GOOGLE_DRIVE_SETUP.md for the one-time steps.", systemImage: "exclamationmark.triangle")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+        }
+
+        if syncManager.provider != .none {
+            HStack {
+                Text("Status")
+                Spacer()
+                if syncManager.isSyncing {
+                    ProgressView()
+                } else if let lastSyncedAt = syncManager.lastSyncedAt {
+                    Text("Synced \(lastSyncedAt.formatted(date: .abbreviated, time: .shortened))")
+                        .foregroundStyle(.secondary)
+                        .font(.footnote)
+                } else {
+                    Text("Not synced yet")
+                        .foregroundStyle(.secondary)
+                        .font(.footnote)
+                }
+            }
+            if let lastError = syncManager.lastError {
+                Label(lastError, systemImage: "exclamationmark.triangle.fill")
+                    .foregroundStyle(.red)
+                    .font(.footnote)
+            }
+            Button {
+                Task { await syncManager.syncNow() }
+            } label: {
+                Label("Sync Now", systemImage: "arrow.triangle.2.circlepath")
+            }
+            .disabled(syncManager.isSyncing || (syncManager.provider == .googleDrive && !isGoogleSignedIn))
+        }
+    }
+
+    /// Presents Google's sign-in UI, which needs a real UIViewController to
+    /// present from -- SwiftUI has no view of its own for this, so this
+    /// reaches for the key window's root view controller the same way
+    /// other UIKit-bridged presentations in this app (CameraCapture,
+    /// ShareSheetPresenter) ultimately get one, just without a
+    /// UIViewControllerRepresentable wrapper since GoogleSignIn's API
+    /// wants the view controller handed to it directly.
+    private func signInWithGoogle() {
+        guard let handler = SyncManager.googleSignInHandler else { return }
+        guard let rootViewController = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .flatMap({ $0.windows })
+            .first(where: { $0.isKeyWindow })?.rootViewController
+        else { return }
+        handler(rootViewController) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    syncManager.refreshAccountLabel()
+                    Task { await syncManager.syncNow() }
+                case .failure(let error):
+                    googleSignInError = error.localizedDescription
+                }
+            }
         }
     }
 }

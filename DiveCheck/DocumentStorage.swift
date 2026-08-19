@@ -7,7 +7,9 @@ import Foundation
 /// compression, since documents are handled as opaque binary data rather
 /// than images.
 enum DocumentStorage {
-    private static var directory: URL {
+    /// Exposed (not private) so SyncManager can enumerate/target this
+    /// folder directly for Backup & Sync without duplicating the path.
+    static var directory: URL {
         let url = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
             .appendingPathComponent("DiveDocuments", isDirectory: true)
         if !FileManager.default.fileExists(atPath: url.path) {
@@ -30,6 +32,7 @@ enum DocumentStorage {
         let destination = directory.appendingPathComponent(filename)
         do {
             try data.write(to: destination)
+            notifyAdded(filename)
             return filename
         } catch {
             return nil
@@ -42,5 +45,34 @@ enum DocumentStorage {
 
     static func delete(_ filename: String) {
         try? FileManager.default.removeItem(at: directory.appendingPathComponent(filename))
+        NotificationCenter.default.post(name: .diveCheckMediaFileDeleted, object: nil, userInfo: ["filename": filename, "directory": MediaDirectory.documents.rawValue])
+    }
+
+    /// Copies an existing stored document to a fresh UUID-named file
+    /// (preserving its extension) and returns the new filename. Used when
+    /// snapshotting a record that references a document (e.g. "Save to
+    /// History" on the Diver Medical ID's WRSTC form) so the snapshot owns
+    /// an independent copy of the file -- a later replace/remove on the
+    /// live record's document won't invalidate what was saved.
+    static func duplicate(_ filename: String) -> String? {
+        let source = directory.appendingPathComponent(filename)
+        guard FileManager.default.fileExists(atPath: source.path) else { return nil }
+        let fileExtension = (filename as NSString).pathExtension
+        let newFilename = "\(UUID().uuidString).\(fileExtension)"
+        let destination = directory.appendingPathComponent(newFilename)
+        do {
+            try FileManager.default.copyItem(at: source, to: destination)
+            notifyAdded(newFilename)
+            return newFilename
+        } catch {
+            return nil
+        }
+    }
+
+    /// Posts the notification SyncManager listens for to upload a
+    /// freshly-written file -- shared by both `save` and `duplicate` since
+    /// both create a new file on disk that needs to reach the cloud.
+    private static func notifyAdded(_ filename: String) {
+        NotificationCenter.default.post(name: .diveCheckMediaFileAdded, object: nil, userInfo: ["filename": filename, "directory": MediaDirectory.documents.rawValue])
     }
 }

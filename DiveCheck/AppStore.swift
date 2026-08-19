@@ -264,6 +264,12 @@ final class AppStore: ObservableObject {
         ) { [weak self] notification in
             self?.reloadFromCloud(notification)
         }
+
+        // Backup & Sync (see SyncManager.swift) needs a live reference to
+        // this instance to build/apply full-state snapshots -- there's
+        // only ever one AppStore for the app's lifetime, so wiring this up
+        // here rather than passing it around everywhere is simplest.
+        SyncManager.shared.appStore = self
     }
 
     deinit {
@@ -332,8 +338,10 @@ final class AppStore: ObservableObject {
     /// Applies the canonical home-screen order (Open Circuit, Closed
     /// Circuit, Technical Diving, Travel), so reordering the seed data also
     /// fixes already-installed/persisted state. Any unrecognized/custom
-    /// categories are kept, appended after the known ones.
-    private static func reordered(_ cats: [DiveCategory]) -> [DiveCategory] {
+    /// categories are kept, appended after the known ones. Not private --
+    /// AppStoreSnapshot.swift's applySyncSnapshot(_:) also reorders a
+    /// pulled remote snapshot's categories the same way.
+    static func reordered(_ cats: [DiveCategory]) -> [DiveCategory] {
         let order = SeedData.canonicalOrder
         return cats.enumerated().sorted { lhs, rhs in
             let li = order.firstIndex(of: lhs.element.name) ?? Int.max
@@ -400,6 +408,11 @@ final class AppStore: ObservableObject {
         } else {
             UserDefaults.standard.removeObject(forKey: medicalIDKey)
             CloudSync.store.removeObject(forKey: medicalIDKey)
+            // The branch above doesn't go through CloudSync.save(_:forKey:),
+            // so it wouldn't otherwise tell SyncManager anything changed --
+            // without this, clearing the Diver Medical ID wouldn't reach
+            // Backup & Sync until some other field happened to change too.
+            CloudSync.notifySyncManager()
         }
     }
 

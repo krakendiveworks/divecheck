@@ -23,6 +23,23 @@ import Foundation
 enum CloudSync {
     static let store = NSUbiquitousKeyValueStore.default
 
+    /// Set by AppStore.applySyncSnapshot (see AppStoreSnapshot.swift) while
+    /// overwriting local state from a newly-pulled remote Backup & Sync
+    /// snapshot, so the didSet-triggered local saves that overwrite fires
+    /// don't turn around and immediately re-push the exact same data back
+    /// up to SyncManager.
+    static var isApplyingRemoteSnapshot = false
+
+    /// Tells SyncManager (see SyncManager.swift) that persisted state
+    /// changed, so it can schedule pushing an updated Backup & Sync
+    /// snapshot -- called from every save method below, which between them
+    /// cover everything AppStore persists, so this one hook is all Backup
+    /// & Sync needs to stay current with the rest of the app.
+    static func notifySyncManager() {
+        guard !isApplyingRemoteSnapshot else { return }
+        SyncManager.shared.scheduleSync()
+    }
+
     /// Encodes `value` and writes it to both UserDefaults (so the next
     /// launch reads instantly even if iCloud is unavailable) and the iCloud
     /// key-value store (so the user's other devices pick it up).
@@ -30,6 +47,7 @@ enum CloudSync {
         guard let data = try? JSONEncoder().encode(value) else { return }
         UserDefaults.standard.set(data, forKey: key)
         store.set(data, forKey: key)
+        notifySyncManager()
     }
 
     /// Loads `key`, preferring the iCloud copy so a second device (or a
@@ -56,6 +74,7 @@ enum CloudSync {
     static func saveString(_ value: String, forKey key: String) {
         UserDefaults.standard.set(value, forKey: key)
         store.set(value, forKey: key)
+        notifySyncManager()
     }
 
     static func loadString(forKey key: String) -> String? {
@@ -75,6 +94,7 @@ enum CloudSync {
     static func saveBool(_ value: Bool, forKey key: String) {
         UserDefaults.standard.set(value, forKey: key)
         store.set(value, forKey: key)
+        notifySyncManager()
     }
 
     /// Returns nil (rather than `false`) when the key has never been set on
@@ -132,6 +152,7 @@ enum CloudSync {
     static func saveLocalOnly<T: Encodable>(_ value: T, forKey key: String) {
         guard let data = try? JSONEncoder().encode(value) else { return }
         UserDefaults.standard.set(data, forKey: key)
+        notifySyncManager()
     }
 
     static func loadLocalOnly<T: Decodable>(_ type: T.Type, forKey key: String) -> T? {
