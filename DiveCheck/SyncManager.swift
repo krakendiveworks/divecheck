@@ -1,5 +1,4 @@
 import Foundation
-import UIKit
 
 /// Coordinates syncing AppStore's entire persisted state (see
 /// AppStoreSnapshot.swift) plus every file in PhotoStorage/DocumentStorage
@@ -28,18 +27,6 @@ final class SyncManager: ObservableObject {
             activateBackend()
         }
     }
-
-    /// Wired up by GoogleDriveBackend.swift's own extension on this type,
-    /// if that file has been added to the Xcode project (see its doc
-    /// comment -- it's delivered separately, not part of the base
-    /// project, since it depends on the GoogleSignIn package and your own
-    /// OAuth client). Nil until then, which is how Settings knows whether
-    /// to show a working sign-in flow or "Set up Google Drive..."
-    /// instructions instead.
-    static var googleDriveFactory: (() -> CloudSyncBackend)?
-    static var googleSignInHandler: ((_ presenting: UIViewController, _ completion: @escaping (Result<Void, Error>) -> Void) -> Void)?
-    static var googleSignOutHandler: (() -> Void)?
-    static var googleIsSignedInHandler: (() -> Bool)?
 
     weak var appStore: AppStore?
     private var backend: CloudSyncBackend?
@@ -119,18 +106,7 @@ final class SyncManager: ObservableObject {
             backend = iCloudDriveBackend()
             accountLabel = backend?.accountLabel
             Task { await pull() }
-        case .googleDrive:
-            backend = Self.googleDriveFactory?()
-            accountLabel = backend?.accountLabel
-            Task { await pull() }
         }
-    }
-
-    /// Call once Google Sign-In completes (from Settings), since the
-    /// backend's account label (the signed-in email) wasn't known until
-    /// the user actually signed in.
-    func refreshAccountLabel() {
-        accountLabel = backend?.accountLabel
     }
 
     // MARK: - Push (local -> remote)

@@ -1,12 +1,10 @@
 import Foundation
 
 /// One destination DiveCheck can automatically back up its data to --
-/// picked in Settings > Backup & Sync. `SyncManager` talks to whichever
-/// backend is active purely through this protocol, so it never needs to
-/// know whether it's actually iCloud Drive or Google Drive on the other
-/// end -- see iCloudDriveBackend.swift and GoogleDriveBackend.swift.
+/// picked in Settings > Backup & Sync. `SyncManager` talks to the active
+/// backend purely through this protocol -- see iCloudDriveBackend.swift.
 ///
-/// Both backends store everything in one flat, app-owned remote folder --
+/// The backend stores everything in one flat, app-owned remote folder --
 /// the full-state snapshot (see AppStoreSnapshot.swift) plus every file
 /// from PhotoStorage/DocumentStorage, each keyed by a unique remote
 /// filename (see SyncManager's naming helpers). No subdirectories, no
@@ -14,9 +12,7 @@ import Foundation
 protocol CloudSyncBackend {
     init()
 
-    /// Human-readable label for Settings -- e.g. "iCloud Drive", or the
-    /// signed-in Google account's email once GoogleDriveBackend is wired
-    /// up.
+    /// Human-readable label for Settings -- e.g. "iCloud Drive".
     var accountLabel: String { get }
 
     /// Uploads/overwrites the file at `remoteName`.
@@ -39,13 +35,11 @@ protocol CloudSyncBackend {
 enum SyncProvider: String, Codable, CaseIterable {
     case none
     case iCloud
-    case googleDrive
 
     var displayName: String {
         switch self {
         case .none: return "Off"
         case .iCloud: return "iCloud Drive"
-        case .googleDrive: return "Google Drive"
         }
     }
 }
