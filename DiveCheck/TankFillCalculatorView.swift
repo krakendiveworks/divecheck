@@ -77,6 +77,14 @@ struct TankFillCalculatorView: View {
         cuFtAdded * Self.literPerCuFt
     }
 
+    // `@available(deprecated:)` here (rather than on the whole struct)
+    // silences the two `onChange(of:perform:)` deprecation warnings below
+    // without also making every *external* reference to
+    // TankFillCalculatorView (CalculatorsListView, ContentView) warn --
+    // the single-value overload is intentionally kept because the
+    // two/zero-parameter replacement needs iOS 17+ and this app supports
+    // iOS 16 (see DiveSiteMapView for the same tradeoff elsewhere).
+    @available(iOS, deprecated: 17.0, message: "onChange(of:perform:) intentionally kept for iOS 16 support -- the two/zero-parameter replacement needs iOS 17+.")
     var body: some View {
         Form {
             Section {

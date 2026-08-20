@@ -1,4 +1,4 @@
-import Foundation
+@preconcurrency import Foundation
 
 /// Syncs DiveCheck's data through the app's iCloud Drive document
 /// container -- real file storage, sized for the full state snapshot plus
@@ -107,47 +107,74 @@ struct iCloudDriveBackend: CloudSyncBackend {
     /// reporting what's there, closing that race.
     private static func queryContainerContents() async -> [String: URL] {
         await withCheckedContinuation { continuation in
-            let resumeLock = NSLock()
-            var didResume = false
-            func resumeOnce(_ value: [String: URL]) {
-                resumeLock.lock()
-                defer { resumeLock.unlock() }
-                guard !didResume else { return }
-                didResume = true
-                continuation.resume(returning: value)
-            }
-
-            let query = NSMetadataQuery()
-            query.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
-            query.predicate = NSPredicate(format: "%K LIKE '*'", NSMetadataItemFSNameKey)
-
-            var observer: NSObjectProtocol?
-            observer = NotificationCenter.default.addObserver(forName: .NSMetadataQueryDidFinishGathering, object: query, queue: .main) { _ in
-                query.disableUpdates()
-                var results: [String: URL] = [:]
-                for case let item as NSMetadataItem in query.results {
-                    if let url = item.value(forAttribute: NSMetadataItemURLKey) as? URL {
-                        results[url.lastPathComponent] = url
-                    }
-                }
-                query.stop()
-                if let observer { NotificationCenter.default.removeObserver(observer) }
-                resumeOnce(results)
-            }
-
-            DispatchQueue.main.async {
-                query.start()
-            }
-
-            // Safety net -- if the query never fires (iCloud completely
-            // unreachable, etc.), don't hang forever; report "nothing
-            // found" after a reasonable wait rather than blocking sync
-            // indefinitely.
-            DispatchQueue.main.asyncAfter(deadline: .now() + 15) {
-                if let observer { NotificationCenter.default.removeObserver(observer) }
-                query.stop()
-                resumeOnce([:])
-            }
+            QueryCoordinator(continuation: continuation).start()
         }
+    }
+}
+
+/// Bridges NSMetadataQuery's completion notification into a single Swift
+/// continuation. Previously this state (the query, its observer token, and
+/// a "have we already resumed" flag) lived as plain local `var`s captured
+/// by the notification/timeout closures directly -- which strict
+/// concurrency checking flags, since Foundation declares those closures
+/// `@Sendable` and a `@Sendable` closure can't safely capture a mutable
+/// local that's written to both inside and outside itself, nor a
+/// non-Sendable type like NSMetadataQuery. Moving the state into this
+/// class fixes that at the root rather than papering over it: both
+/// closures below now only capture `self` (a class reference explicitly
+/// asserted `@unchecked Sendable`), and read/write `self.query`/
+/// `self.observer`/`self.continuation` instead. That assertion is safe
+/// because every access happens on the main queue -- the notification
+/// observer below is explicitly registered with `queue: .main`, and the
+/// timeout uses `DispatchQueue.main` -- so there's no actual concurrent
+/// access despite the compiler not being able to prove it statically.
+private final class QueryCoordinator: @unchecked Sendable {
+    private let query = NSMetadataQuery()
+    private var observer: NSObjectProtocol?
+    private var continuation: CheckedContinuation<[String: URL], Never>?
+    private var didFinish = false
+
+    init(continuation: CheckedContinuation<[String: URL], Never>) {
+        self.continuation = continuation
+        query.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
+        query.predicate = NSPredicate(format: "%K LIKE '*'", NSMetadataItemFSNameKey)
+    }
+
+    func start() {
+        observer = NotificationCenter.default.addObserver(forName: .NSMetadataQueryDidFinishGathering, object: query, queue: .main) { [self] _ in
+            query.disableUpdates()
+            var results: [String: URL] = [:]
+            for case let item as NSMetadataItem in query.results {
+                if let url = item.value(forAttribute: NSMetadataItemURLKey) as? URL {
+                    results[url.lastPathComponent] = url
+                }
+            }
+            finish(with: results)
+        }
+
+        DispatchQueue.main.async { [self] in
+            query.start()
+        }
+
+        // Safety net -- if the query never fires (iCloud completely
+        // unreachable, etc.), don't hang forever; report "nothing
+        // found" after a reasonable wait rather than blocking sync
+        // indefinitely.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 15) { [self] in
+            finish(with: [:])
+        }
+    }
+
+    /// Guards against firing twice (the notification and the 15s timeout
+    /// racing) -- everything here only ever runs on the main queue (see
+    /// the class doc comment), so a plain flag is enough; no lock needed
+    /// the way the old free-function version required one.
+    private func finish(with results: [String: URL]) {
+        guard !didFinish else { return }
+        didFinish = true
+        query.stop()
+        if let observer { NotificationCenter.default.removeObserver(observer) }
+        continuation?.resume(returning: results)
+        continuation = nil
     }
 }

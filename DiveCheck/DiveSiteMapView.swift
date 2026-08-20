@@ -90,7 +90,7 @@ struct DiveSiteMapView: View {
 /// iOS 16-compatible map. `Map(coordinateRegion:annotationItems:...)` and
 /// `MapAnnotation` were deprecated in iOS 17, but they're still the only
 /// option available pre-17, so this stays in place rather than being
-/// removed -- see ModernPinMap below for the iOS 17+ replacement.
+/// removed -- see ModernPinMap below for the iOS 17+ replacement. The
 private struct LegacyPinMap: View {
     let pins: [MapPin]
     @Binding var path: [ChecklistRoute]
@@ -105,6 +105,14 @@ private struct LegacyPinMap: View {
         ))
     }
 
+    // `@available(deprecated:)` here (rather than on the whole struct)
+    // tells the compiler this deprecated-API usage is intentional (kept
+    // only for pre-17 devices, never reached at runtime on 17+ since
+    // DiveSiteMapView picks ModernPinMap there instead), so it doesn't
+    // warn about it on every build -- scoped to just `body` so
+    // *instantiating* LegacyPinMap from DiveSiteMapView's `else` branch
+    // above doesn't itself pick up a new deprecation warning too.
+    @available(iOS, deprecated: 17.0, message: "Intentionally kept for pre-iOS 17 devices -- see ModernPinMap for the iOS 17+ replacement actually used there.")
     var body: some View {
         Map(coordinateRegion: $region, annotationItems: pins) { pin in
             MapAnnotation(coordinate: pin.coordinate) {
