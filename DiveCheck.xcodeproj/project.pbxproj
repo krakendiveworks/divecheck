@@ -110,6 +110,7 @@
 		1C000000000000000000006D /* TrainingRosterProgram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000006D /* TrainingRosterProgram.swift */; };
 		1C000000000000000000006E /* DivemasterSeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000006E /* DivemasterSeedData.swift */; };
 		1C000000000000000000007F /* AdvancedOpenWaterSeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000007F /* AdvancedOpenWaterSeedData.swift */; };
+		1C0000000000000000000080 /* RescueDiverSeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000080 /* RescueDiverSeedData.swift */; };
 		1C000000000000000000006F /* TrainingCandidatesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000006F /* TrainingCandidatesListView.swift */; };
 		1C0000000000000000000070 /* AddTrainingCandidateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000070 /* AddTrainingCandidateView.swift */; };
 		1C0000000000000000000071 /* TrainingCandidateDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000071 /* TrainingCandidateDetailView.swift */; };
@@ -235,6 +236,7 @@
 		1B000000000000000000006D /* TrainingRosterProgram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingRosterProgram.swift; sourceTree = "<group>"; };
 		1B000000000000000000006E /* DivemasterSeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DivemasterSeedData.swift; sourceTree = "<group>"; };
 		1B000000000000000000007F /* AdvancedOpenWaterSeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedOpenWaterSeedData.swift; sourceTree = "<group>"; };
+		1B0000000000000000000080 /* RescueDiverSeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RescueDiverSeedData.swift; sourceTree = "<group>"; };
 		1B000000000000000000006F /* TrainingCandidatesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingCandidatesListView.swift; sourceTree = "<group>"; };
 		1B0000000000000000000070 /* AddTrainingCandidateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrainingCandidateView.swift; sourceTree = "<group>"; };
 		1B0000000000000000000071 /* TrainingCandidateDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingCandidateDetailView.swift; sourceTree = "<group>"; };
@@ -425,6 +427,7 @@
 				1B000000000000000000006D /* TrainingRosterProgram.swift */,
 				1B000000000000000000006E /* DivemasterSeedData.swift */,
 				1B000000000000000000007F /* AdvancedOpenWaterSeedData.swift */,
+				1B0000000000000000000080 /* RescueDiverSeedData.swift */,
 				1B000000000000000000006F /* TrainingCandidatesListView.swift */,
 				1B0000000000000000000070 /* AddTrainingCandidateView.swift */,
 				1B0000000000000000000071 /* TrainingCandidateDetailView.swift */,
@@ -618,6 +621,7 @@
 				1C000000000000000000006D /* TrainingRosterProgram.swift in Sources */,
 				1C000000000000000000006E /* DivemasterSeedData.swift in Sources */,
 				1C000000000000000000007F /* AdvancedOpenWaterSeedData.swift in Sources */,
+				1C0000000000000000000080 /* RescueDiverSeedData.swift in Sources */,
 				1C000000000000000000006F /* TrainingCandidatesListView.swift in Sources */,
 				1C0000000000000000000070 /* AddTrainingCandidateView.swift in Sources */,
 				1C0000000000000000000071 /* TrainingCandidateDetailView.swift in Sources */,

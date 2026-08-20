@@ -152,7 +152,22 @@ enum TrainingSeedData {
     /// Dive card's knot-tying diagrams, and a couple of handwritten
     /// annotations/signatures omitted as personal (not official card)
     /// content.
-    static let contentVersion = 12
+    ///
+    /// v13: PADI > Rescue Diver -- added as a plain `TrainingCertification`
+    /// (not a roster program, for the same reason as v12 above) with 16
+    /// checklists covering the Self-Rescue Review, Rescue Exercises 1-10,
+    /// two standalone multi-exercise practice/review sessions, Open Water
+    /// Scenarios One and Two, and the Inwater Rescue Breathing Guidelines --
+    /// ordered by the page number printed on each of the 16 PADI Rescue
+    /// Diver Instructor Slates. Unlike the Advanced Open Water slates,
+    /// content here flows continuously across several physical cards rather
+    /// than resetting per card, so checklists are grouped by the card's own
+    /// named section headings instead of strictly one per card -- see
+    /// RescueDiverSeedData.swift for the full transcription and its notes
+    /// on how the two standalone "Exercise Practice" sessions were told
+    /// apart from the three exercises that have their own practice
+    /// subsection built into that same exercise's card.
+    static let contentVersion = 13
 
     static func makeAgencies() -> [TrainingAgency] {
         [
@@ -169,7 +184,8 @@ enum TrainingSeedData {
             symbolName: "graduationcap.fill",
             certifications: [
                 openWaterDiverConfinedWater(),
-                advancedOpenWaterDiver()
+                advancedOpenWaterDiver(),
+                rescueDiver()
             ],
             rosterPrograms: [
                 divemaster()
@@ -181,6 +197,13 @@ enum TrainingSeedData {
         TrainingCertification(
             name: "Advanced Open Water Diver",
             checklists: AdvancedOpenWaterSeedData.makeChecklists()
+        )
+    }
+
+    private static func rescueDiver() -> TrainingCertification {
+        TrainingCertification(
+            name: "Rescue Diver",
+            checklists: RescueDiverSeedData.makeChecklists()
         )
     }
 
