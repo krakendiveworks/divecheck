@@ -22,8 +22,17 @@ import QuickLook
 /// clear "this hasn't finished syncing yet" state.
 struct DocumentPreview: View {
     let url: URL
-    @State private var fileExists = FileManager.default.fileExists(atPath: url.path)
+    @State private var fileExists: Bool
     @State private var isRetrying = false
+
+    // Property initializers run before `self` exists, so `fileExists`
+    // can't be seeded from `url` as a plain default value (that's a
+    // property on the same instance) -- an explicit init sidesteps that by
+    // building the State wrapper directly via State(initialValue:).
+    init(url: URL) {
+        self.url = url
+        self._fileExists = State(initialValue: FileManager.default.fileExists(atPath: url.path))
+    }
 
     var body: some View {
         Group {
