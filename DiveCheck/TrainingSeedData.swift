@@ -137,7 +137,22 @@ enum TrainingSeedData {
     /// Divemaster is untouched and still fully checkable/trackable, since
     /// that's the one program tracked per-candidate. See the `item()`
     /// helpers at the bottom of this file.
-    static let contentVersion = 11
+    ///
+    /// v12: PADI > Advanced Open Water Diver -- added as a plain
+    /// `TrainingCertification` (not a roster program) with all 14 checklists
+    /// (13 Adventure Dives plus the shared "Thinking Like a Diver"
+    /// briefing/debriefing framework card), ordered Thinking Like a Diver,
+    /// Deep Dive, Underwater Navigation Dive, then the rest. Content
+    /// transcribed from the 14 PADI Advanced Open Water Diver Instructor
+    /// Slates and built using the same non-checkable reference-bullet
+    /// convention as v11 above, since Advanced Open Water has no per-student
+    /// tracking need either. See AdvancedOpenWaterSeedData.swift, including
+    /// its notes on two things the physical cards show that the app's
+    /// text-only checklist model can't represent: the Search and Recovery
+    /// Dive card's knot-tying diagrams, and a couple of handwritten
+    /// annotations/signatures omitted as personal (not official card)
+    /// content.
+    static let contentVersion = 12
 
     static func makeAgencies() -> [TrainingAgency] {
         [
@@ -153,11 +168,19 @@ enum TrainingSeedData {
             name: "PADI",
             symbolName: "graduationcap.fill",
             certifications: [
-                openWaterDiverConfinedWater()
+                openWaterDiverConfinedWater(),
+                advancedOpenWaterDiver()
             ],
             rosterPrograms: [
                 divemaster()
             ]
+        )
+    }
+
+    private static func advancedOpenWaterDiver() -> TrainingCertification {
+        TrainingCertification(
+            name: "Advanced Open Water Diver",
+            checklists: AdvancedOpenWaterSeedData.makeChecklists()
         )
     }
 
