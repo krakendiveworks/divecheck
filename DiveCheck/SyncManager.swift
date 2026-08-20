@@ -153,10 +153,32 @@ final class SyncManager: ObservableObject {
 
     /// Downloads the remote snapshot (if any) and, when it's newer than
     /// what's already loaded locally, overwrites local state with it.
-    /// Downloads any media files referenced remotely that aren't on disk
-    /// yet first, so the applied snapshot never briefly points at photos
-    /// that haven't arrived. Called on provider activation and from
-    /// Settings' "Sync Now".
+    ///
+    /// Downloading any media files referenced remotely that aren't on disk
+    /// yet happens *unconditionally* here, before the newer-than check --
+    /// not just when the snapshot turns out to be newer. This closes a real
+    /// gap: a record's filename reference (e.g. DiverMedicalID's
+    /// wrstcFormFilename, Certification's cardDocumentFilename) reaches
+    /// this device almost immediately through CloudSync's separate,
+    /// always-on per-field iCloud key-value sync (see CloudSync.swift/
+    /// AppStore.swift), which runs independently of this Backup & Sync
+    /// pipeline entirely. The referenced file's actual bytes, though, only
+    /// ever arrive through this slower path. If this device's pull() ran
+    /// (and recorded success) before that upload had finished landing in
+    /// iCloud, the old version of this method -- which only retried
+    /// downloadAllMedia when the snapshot was newer than last time -- would
+    /// never give that download a second chance on any later pull(), since
+    /// nothing about the snapshot changes just because a file is still
+    /// missing. The reference would stay permanently dangling: the record
+    /// looks like it has a file (name + upload date both present, synced
+    /// fine), but tapping View tries to preview a file that was never
+    /// actually written to this device -- QuickLook shows little more than
+    /// the raw UUID filename in that case, easy to mistake for garbage/a
+    /// hex string instead of a missing-file state (see DocumentPreview.swift
+    /// for the fallback UI that now also covers this).
+    /// `downloadAllMedia` already skips anything that already exists
+    /// locally, so retrying it on every pull() is cheap once fully synced.
+    /// Called on provider activation and from Settings' "Sync Now".
     func pull() async {
         guard let backend, let appStore else { return }
         await MainActor.run { isSyncing = true }
@@ -169,9 +191,9 @@ final class SyncManager: ObservableObject {
                 return
             }
             let snapshot = try JSONDecoder.diveCheckSync.decode(AppStoreSnapshot.self, from: data)
+            try await downloadAllMedia(backend: backend)
             let localTimestamp = lastSyncedAt
             if localTimestamp == nil || snapshot.modifiedAt > localTimestamp! {
-                try await downloadAllMedia(backend: backend)
                 await MainActor.run { appStore.applySyncSnapshot(snapshot) }
                 await recordSuccessfulSync(at: snapshot.modifiedAt)
             } else {
