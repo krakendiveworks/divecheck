@@ -12,20 +12,44 @@ import SwiftUI
 struct TrainingAgenciesListView: View {
     @ObservedObject var store: AppStore
 
+    /// Agencies with at least one candidate-tracked program (e.g. PADI's
+    /// Divemaster Program) -- shown as the Student Tracking row's subtitle
+    /// count. See StudentTrackingListView.
+    private var agenciesWithPrograms: Int {
+        store.trainingAgencies.filter { !$0.rosterPrograms.isEmpty }.count
+    }
+
     var body: some View {
         List {
-            if let category = store.scubaClassPackingCategory, let checklist = category.checklists.first {
-                NavigationLink(value: ChecklistRoute.checklist(categoryID: category.id, subcategoryID: nil, checklistID: checklist.id)) {
-                    ToolRow(
-                        title: category.name,
-                        subtitle: "\(checklist.progress.checked)/\(checklist.progress.total) complete",
-                        symbolName: category.symbolName
-                    )
+            Section {
+                if let category = store.scubaClassPackingCategory, let checklist = category.checklists.first {
+                    NavigationLink(value: ChecklistRoute.checklist(categoryID: category.id, subcategoryID: nil, checklistID: checklist.id)) {
+                        ToolRow(
+                            title: category.name,
+                            subtitle: "\(checklist.progress.checked)/\(checklist.progress.total) complete",
+                            symbolName: category.symbolName
+                        )
+                    }
+                }
+                ForEach(store.trainingAgencies) { agency in
+                    NavigationLink(value: ChecklistRoute.trainingAgency(agency.id)) {
+                        AgencyRow(agency: agency)
+                    }
                 }
             }
-            ForEach(store.trainingAgencies) { agency in
-                NavigationLink(value: ChecklistRoute.trainingAgency(agency.id)) {
-                    AgencyRow(agency: agency)
+            // Candidate-tracked programs (e.g. PADI Divemaster) used to be
+            // listed on each agency's own page alongside its class slates;
+            // they're broken out into their own Training entry instead,
+            // since tracking a roster of students is a different job than
+            // working through a personal certification checklist -- see
+            // StudentTrackingListView.
+            Section {
+                NavigationLink(value: ChecklistRoute.studentTracking) {
+                    ToolRow(
+                        title: "Student Tracking",
+                        subtitle: agenciesWithPrograms == 1 ? "1 agency" : "\(agenciesWithPrograms) agencies",
+                        symbolName: "person.3.fill"
+                    )
                 }
             }
         }
@@ -39,7 +63,7 @@ private struct AgencyRow: View {
 
     private var subtitle: String {
         let count = agency.certifications.count
-        return count == 1 ? "1 certification" : "\(count) certifications"
+        return count == 1 ? "1 class slate" : "\(count) class slates"
     }
 
     var body: some View {

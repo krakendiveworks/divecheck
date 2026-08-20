@@ -40,7 +40,11 @@ enum ChecklistRoute: Hashable {
     case serviceHistory
     case certifications
     case certificationDetail(UUID)
+    case savedCertifications
+    case savedCertificationDetail(UUID)
     case diverMedicalID
+    case savedDiverMedicalIDs
+    case savedDiverMedicalIDDetail(UUID)
     case diveSiteMap
     case diveComputers
     case diveComputerDetail(UUID)
@@ -48,6 +52,8 @@ enum ChecklistRoute: Hashable {
     case trainingAgency(UUID)
     case trainingCertification(agencyID: UUID, certificationID: UUID)
     case trainingChecklist(agencyID: UUID, certificationID: UUID, checklistID: UUID)
+    case studentTracking
+    case studentTrackingAgency(UUID)
     case trainingRosterProgram(agencyID: UUID, programID: UUID)
     case trainingCandidateDetail(agencyID: UUID, programID: UUID, candidateID: UUID)
     case trainingCandidateChecklist(agencyID: UUID, programID: UUID, candidateID: UUID, checklistID: UUID)

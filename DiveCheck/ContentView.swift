@@ -192,8 +192,16 @@ struct ContentView: View {
             CertificationsListView(store: store, path: $path)
         case .certificationDetail(let certificationID):
             CertificationDetailView(store: store, certificationID: certificationID)
+        case .savedCertifications:
+            SavedCertificationsListView(store: store)
+        case .savedCertificationDetail(let savedID):
+            SavedCertificationDetailView(store: store, savedID: savedID)
         case .diverMedicalID:
             DiverMedicalIDView(store: store)
+        case .savedDiverMedicalIDs:
+            SavedDiverMedicalIDsListView(store: store)
+        case .savedDiverMedicalIDDetail(let savedID):
+            SavedDiverMedicalIDDetailView(store: store, savedID: savedID)
         case .diveSiteMap:
             DiveSiteMapView(store: store, path: $path)
         case .diveComputers:
@@ -210,6 +218,10 @@ struct ContentView: View {
             ChecklistDetailView(
                 checklist: store.trainingBinding(agencyID: agencyID, certificationID: certificationID, checklistID: checklistID)
             )
+        case .studentTracking:
+            StudentTrackingListView(store: store)
+        case .studentTrackingAgency(let agencyID):
+            StudentTrackingAgencyProgramsListView(store: store, agencyID: agencyID)
         case .trainingRosterProgram(let agencyID, let programID):
             TrainingCandidatesListView(store: store, agencyID: agencyID, programID: programID, path: $path)
         case .trainingCandidateDetail(let agencyID, let programID, let candidateID):

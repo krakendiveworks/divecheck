@@ -88,17 +88,6 @@
 		1C0000000000000000000059 /* CameraCapture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000059 /* CameraCapture.swift */; };
 		1C000000000000000000005A /* EADCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000005A /* EADCalculatorView.swift */; };
 		1C000000000000000000005B /* GasTimeCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000005B /* GasTimeCalculatorView.swift */; };
-		1C0000000000000000000072 /* TankFillCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000072 /* TankFillCalculatorView.swift */; };
-		1C0000000000000000000073 /* SavedCertification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000073 /* SavedCertification.swift */; };
-		1C0000000000000000000074 /* SavedDiverMedicalID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000074 /* SavedDiverMedicalID.swift */; };
-		1C0000000000000000000075 /* SavedCertificationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000075 /* SavedCertificationsListView.swift */; };
-		1C0000000000000000000076 /* SavedCertificationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000076 /* SavedCertificationDetailView.swift */; };
-		1C0000000000000000000077 /* SavedDiverMedicalIDsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000077 /* SavedDiverMedicalIDsListView.swift */; };
-		1C0000000000000000000078 /* SavedDiverMedicalIDDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000078 /* SavedDiverMedicalIDDetailView.swift */; };
-		1C0000000000000000000079 /* SyncBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000079 /* SyncBackend.swift */; };
-		1C000000000000000000007A /* AppStoreSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000007A /* AppStoreSnapshot.swift */; };
-		1C000000000000000000007B /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000007B /* SyncManager.swift */; };
-		1C000000000000000000007C /* iCloudDriveBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000007C /* iCloudDriveBackend.swift */; };
 		1C000000000000000000005C /* MinimumGasCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000005C /* MinimumGasCalculatorView.swift */; };
 		1C000000000000000000005D /* CNSOxygenCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000005D /* CNSOxygenCalculatorView.swift */; };
 		1C000000000000000000005E /* WeightCheckCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000005E /* WeightCheckCalculatorView.swift */; };
@@ -113,6 +102,8 @@
 		1C0000000000000000000067 /* TrainingCertification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000067 /* TrainingCertification.swift */; };
 		1C0000000000000000000068 /* TrainingSeedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000068 /* TrainingSeedData.swift */; };
 		1C0000000000000000000069 /* TrainingAgenciesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000069 /* TrainingAgenciesListView.swift */; };
+		1C000000000000000000007D /* StudentTrackingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000007D /* StudentTrackingListView.swift */; };
+		1C000000000000000000007E /* StudentTrackingAgencyProgramsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000007E /* StudentTrackingAgencyProgramsListView.swift */; };
 		1C000000000000000000006A /* TrainingCertificationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000006A /* TrainingCertificationsListView.swift */; };
 		1C000000000000000000006B /* TrainingCertificationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000006B /* TrainingCertificationDetailView.swift */; };
 		1C000000000000000000006C /* TrainingCandidate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000006C /* TrainingCandidate.swift */; };
@@ -121,6 +112,17 @@
 		1C000000000000000000006F /* TrainingCandidatesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000006F /* TrainingCandidatesListView.swift */; };
 		1C0000000000000000000070 /* AddTrainingCandidateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000070 /* AddTrainingCandidateView.swift */; };
 		1C0000000000000000000071 /* TrainingCandidateDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000071 /* TrainingCandidateDetailView.swift */; };
+		1C0000000000000000000072 /* TankFillCalculatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000072 /* TankFillCalculatorView.swift */; };
+		1C0000000000000000000073 /* SavedCertification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000073 /* SavedCertification.swift */; };
+		1C0000000000000000000074 /* SavedDiverMedicalID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000074 /* SavedDiverMedicalID.swift */; };
+		1C0000000000000000000075 /* SavedCertificationsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000075 /* SavedCertificationsListView.swift */; };
+		1C0000000000000000000076 /* SavedCertificationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000076 /* SavedCertificationDetailView.swift */; };
+		1C0000000000000000000077 /* SavedDiverMedicalIDsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000077 /* SavedDiverMedicalIDsListView.swift */; };
+		1C0000000000000000000078 /* SavedDiverMedicalIDDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000078 /* SavedDiverMedicalIDDetailView.swift */; };
+		1C0000000000000000000079 /* SyncBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B0000000000000000000079 /* SyncBackend.swift */; };
+		1C000000000000000000007A /* AppStoreSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000007A /* AppStoreSnapshot.swift */; };
+		1C000000000000000000007B /* SyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000007B /* SyncManager.swift */; };
+		1C000000000000000000007C /* iCloudDriveBackend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B000000000000000000007C /* iCloudDriveBackend.swift */; };
 		FA06EBE93023694E00C28869 /* LibDCSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FA06EBE83023694E00C28869 /* LibDCSwift */; };
 		FA06EBF630236A2B00C28869 /* LibDCSwift in Frameworks */ = {isa = PBXBuildFile; productRef = FA06EBF530236A2B00C28869 /* LibDCSwift */; };
 		FA06EBF930236E4400C28869 /* FIT in Frameworks */ = {isa = PBXBuildFile; productRef = FA06EBF830236E4400C28869 /* FIT */; };
@@ -210,17 +212,6 @@
 		1B0000000000000000000059 /* CameraCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCapture.swift; sourceTree = "<group>"; };
 		1B000000000000000000005A /* EADCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EADCalculatorView.swift; sourceTree = "<group>"; };
 		1B000000000000000000005B /* GasTimeCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GasTimeCalculatorView.swift; sourceTree = "<group>"; };
-		1B0000000000000000000072 /* TankFillCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankFillCalculatorView.swift; sourceTree = "<group>"; };
-		1B0000000000000000000073 /* SavedCertification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedCertification.swift; sourceTree = "<group>"; };
-		1B0000000000000000000074 /* SavedDiverMedicalID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDiverMedicalID.swift; sourceTree = "<group>"; };
-		1B0000000000000000000075 /* SavedCertificationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedCertificationsListView.swift; sourceTree = "<group>"; };
-		1B0000000000000000000076 /* SavedCertificationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedCertificationDetailView.swift; sourceTree = "<group>"; };
-		1B0000000000000000000077 /* SavedDiverMedicalIDsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDiverMedicalIDsListView.swift; sourceTree = "<group>"; };
-		1B0000000000000000000078 /* SavedDiverMedicalIDDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDiverMedicalIDDetailView.swift; sourceTree = "<group>"; };
-		1B0000000000000000000079 /* SyncBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBackend.swift; sourceTree = "<group>"; };
-		1B000000000000000000007A /* AppStoreSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreSnapshot.swift; sourceTree = "<group>"; };
-		1B000000000000000000007B /* SyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncManager.swift; sourceTree = "<group>"; };
-		1B000000000000000000007C /* iCloudDriveBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCloudDriveBackend.swift; sourceTree = "<group>"; };
 		1B000000000000000000005C /* MinimumGasCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MinimumGasCalculatorView.swift; sourceTree = "<group>"; };
 		1B000000000000000000005D /* CNSOxygenCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CNSOxygenCalculatorView.swift; sourceTree = "<group>"; };
 		1B000000000000000000005E /* WeightCheckCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightCheckCalculatorView.swift; sourceTree = "<group>"; };
@@ -235,6 +226,8 @@
 		1B0000000000000000000067 /* TrainingCertification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingCertification.swift; sourceTree = "<group>"; };
 		1B0000000000000000000068 /* TrainingSeedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingSeedData.swift; sourceTree = "<group>"; };
 		1B0000000000000000000069 /* TrainingAgenciesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingAgenciesListView.swift; sourceTree = "<group>"; };
+		1B000000000000000000007D /* StudentTrackingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentTrackingListView.swift; sourceTree = "<group>"; };
+		1B000000000000000000007E /* StudentTrackingAgencyProgramsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentTrackingAgencyProgramsListView.swift; sourceTree = "<group>"; };
 		1B000000000000000000006A /* TrainingCertificationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingCertificationsListView.swift; sourceTree = "<group>"; };
 		1B000000000000000000006B /* TrainingCertificationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingCertificationDetailView.swift; sourceTree = "<group>"; };
 		1B000000000000000000006C /* TrainingCandidate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingCandidate.swift; sourceTree = "<group>"; };
@@ -243,6 +236,17 @@
 		1B000000000000000000006F /* TrainingCandidatesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingCandidatesListView.swift; sourceTree = "<group>"; };
 		1B0000000000000000000070 /* AddTrainingCandidateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrainingCandidateView.swift; sourceTree = "<group>"; };
 		1B0000000000000000000071 /* TrainingCandidateDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingCandidateDetailView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000072 /* TankFillCalculatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TankFillCalculatorView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000073 /* SavedCertification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedCertification.swift; sourceTree = "<group>"; };
+		1B0000000000000000000074 /* SavedDiverMedicalID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDiverMedicalID.swift; sourceTree = "<group>"; };
+		1B0000000000000000000075 /* SavedCertificationsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedCertificationsListView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000076 /* SavedCertificationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedCertificationDetailView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000077 /* SavedDiverMedicalIDsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDiverMedicalIDsListView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000078 /* SavedDiverMedicalIDDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedDiverMedicalIDDetailView.swift; sourceTree = "<group>"; };
+		1B0000000000000000000079 /* SyncBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncBackend.swift; sourceTree = "<group>"; };
+		1B000000000000000000007A /* AppStoreSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreSnapshot.swift; sourceTree = "<group>"; };
+		1B000000000000000000007B /* SyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncManager.swift; sourceTree = "<group>"; };
+		1B000000000000000000007C /* iCloudDriveBackend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iCloudDriveBackend.swift; sourceTree = "<group>"; };
 		FA06EBFA3023727A00C28869 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -411,6 +415,8 @@
 				1B0000000000000000000067 /* TrainingCertification.swift */,
 				1B0000000000000000000068 /* TrainingSeedData.swift */,
 				1B0000000000000000000069 /* TrainingAgenciesListView.swift */,
+				1B000000000000000000007D /* StudentTrackingListView.swift */,
+				1B000000000000000000007E /* StudentTrackingAgencyProgramsListView.swift */,
 				1B000000000000000000006A /* TrainingCertificationsListView.swift */,
 				1B000000000000000000006B /* TrainingCertificationDetailView.swift */,
 				1B000000000000000000006C /* TrainingCandidate.swift */,
@@ -601,6 +607,8 @@
 				1C0000000000000000000067 /* TrainingCertification.swift in Sources */,
 				1C0000000000000000000068 /* TrainingSeedData.swift in Sources */,
 				1C0000000000000000000069 /* TrainingAgenciesListView.swift in Sources */,
+				1C000000000000000000007D /* StudentTrackingListView.swift in Sources */,
+				1C000000000000000000007E /* StudentTrackingAgencyProgramsListView.swift in Sources */,
 				1C000000000000000000006A /* TrainingCertificationsListView.swift in Sources */,
 				1C000000000000000000006B /* TrainingCertificationDetailView.swift in Sources */,
 				1C000000000000000000006C /* TrainingCandidate.swift in Sources */,
@@ -740,10 +748,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = DiveCheck/DiveCheck.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = Z2DPJCQPAL;
+				DEVELOPMENT_TEAM = 9QGRUGP89F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DiveCheck/Info.plist;
@@ -761,7 +770,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.billmitlehner.divecheck.personal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.krakendiveworks.divecheck;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -775,10 +784,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = DiveCheck/DiveCheck.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = Z2DPJCQPAL;
+				DEVELOPMENT_TEAM = 9QGRUGP89F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = DiveCheck/Info.plist;
@@ -796,7 +806,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.billmitlehner.divecheck.personal;
+				PRODUCT_BUNDLE_IDENTIFIER = com.krakendiveworks.divecheck;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

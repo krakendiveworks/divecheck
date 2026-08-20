@@ -1,7 +1,10 @@
 import SwiftUI
 
-/// Certification levels built out for one training agency (e.g. PADI's
-/// "Open Water Diver -- Confined Water Dives").
+/// Class slates (certification levels) built out for one training agency
+/// (e.g. PADI's "Open Water Diver -- Confined Water Dives"). Candidate-
+/// tracked programs (e.g. PADI Divemaster) used to have a "Programs"
+/// section here too -- they now live under Training > Student Tracking
+/// instead, see StudentTrackingListView.
 struct TrainingCertificationsListView: View {
     @ObservedObject var store: AppStore
     let agencyID: UUID
@@ -21,17 +24,6 @@ struct TrainingCertificationsListView: View {
                                     value: ChecklistRoute.trainingCertification(agencyID: agencyID, certificationID: certification.id)
                                 ) {
                                     CertificationRow(certification: certification)
-                                }
-                            }
-                        }
-                    }
-                    if !agency.rosterPrograms.isEmpty {
-                        Section("Programs") {
-                            ForEach(agency.rosterPrograms) { program in
-                                NavigationLink(
-                                    value: ChecklistRoute.trainingRosterProgram(agencyID: agencyID, programID: program.id)
-                                ) {
-                                    RosterProgramRow(program: program)
                                 }
                             }
                         }
@@ -60,30 +52,6 @@ private struct CertificationRow: View {
         VStack(alignment: .leading, spacing: 2) {
             Text(certification.name).font(.body.weight(.medium))
             Text(progressText).font(.caption).foregroundStyle(.secondary)
-        }
-        .padding(.vertical, 2)
-    }
-}
-
-/// A candidate-tracked program (e.g. PADI Divemaster), where progress is
-/// recorded per-student rather than as a single personal checklist -- see
-/// TrainingRosterProgram.
-private struct RosterProgramRow: View {
-    let program: TrainingRosterProgram
-
-    private var subtitleText: String {
-        let activeCount = program.candidates.filter { !$0.isArchived }.count
-        switch activeCount {
-        case 0: return "No active candidates"
-        case 1: return "1 active candidate"
-        default: return "\(activeCount) active candidates"
-        }
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(program.name).font(.body.weight(.medium))
-            Text(subtitleText).font(.caption).foregroundStyle(.secondary)
         }
         .padding(.vertical, 2)
     }
