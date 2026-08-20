@@ -167,7 +167,36 @@ enum TrainingSeedData {
     /// on how the two standalone "Exercise Practice" sessions were told
     /// apart from the three exercises that have their own practice
     /// subsection built into that same exercise's card.
-    static let contentVersion = 13
+    /// v14: PADI > Open Water Diver > Open Water Dives -- added as a new
+    /// sibling `TrainingCertification` to the existing Confined Water Dives
+    /// one (named "Open Water Diver -- Open Water Dives", mirroring how SDI
+    /// already has separate Confined Water Dives/Open Water Dives
+    /// certifications), listed directly after it. Covers Open Water Dives
+    /// 1-4, Dive Flexible Skills, and the Controlled Emergency Swimming
+    /// Ascent (CESA) requirements, transcribed from the "Aquatic Cue Card --
+    /// Open Water Dives" photos. Built inline in this file (not a separate
+    /// SeedData file) reusing the existing `item()`/`noteItem()` helpers
+    /// below, since it's the same non-checkable-reference-bullet family as
+    /// the Confined Water content right above it. Each Dive 1-4 checklist
+    /// item's note is the matching numbered Performance Requirement text
+    /// from that dive's own card, following the same "only where a
+    /// confident match exists" rule used for Confined Water in v2 --
+    /// several Overview bullets combine more than one Performance
+    /// Requirement into a single note when the card's Overview groups them
+    /// as one step (e.g. "Explore the dive site -- avoid bottom contact and
+    /// stay close to buddy"), and skills tagged "(dive flexible)" on a
+    /// dive's Overview card are left without a note since their full
+    /// requirement text lives on the separate Dive Flexible Skills card
+    /// instead. Dive Flexible Skills and CESA each print their own two/
+    /// three named subsections (At the Surface/Underwater;
+    /// Briefing/Set Up/Conduct) -- these became nested parent items with
+    /// the card's own lead-in sentence as the parent's note, the same
+    /// pattern RescueDiverSeedData.swift uses for verbatim section
+    /// headings. Handwritten annotations on the physical cards (a
+    /// crossed-out original heading, "Replace BC"/"Remove/Replace BC"
+    /// margin notes, and the instructor's initials/signature) are personal
+    /// markup, not official card content, and are omitted here.
+    static let contentVersion = 14
 
     static func makeAgencies() -> [TrainingAgency] {
         [
@@ -184,6 +213,7 @@ enum TrainingSeedData {
             symbolName: "graduationcap.fill",
             certifications: [
                 openWaterDiverConfinedWater(),
+                openWaterDiverOpenWater(),
                 advancedOpenWaterDiver(),
                 rescueDiver()
             ],
@@ -225,6 +255,20 @@ enum TrainingSeedData {
                 confinedWaterDive5(),
                 waterskillsAssessment(),
                 diveFlexibleSkills()
+            ]
+        )
+    }
+
+    private static func openWaterDiverOpenWater() -> TrainingCertification {
+        TrainingCertification(
+            name: "Open Water Diver -- Open Water Dives",
+            checklists: [
+                openWaterDive1(),
+                openWaterDive2(),
+                openWaterDive3(),
+                openWaterDive4(),
+                openWaterDiveFlexibleSkills(),
+                controlledEmergencySwimmingAscent()
             ]
         )
     }
@@ -366,6 +410,174 @@ enum TrainingSeedData {
                 item("6", "Minidive", note: "Complete a simulated dive -- Minidive -- including planning with a buddy, an entry and exit, a weight and trim check, a five point descent, practicing previously learned skills with emphasis on neutral buoyancy, hovering and swimming, avoiding contact with simulated sensitive bottom and fragile aquatic organisms, responding correctly to at least one but not more than three simulated situations (leg cramp, out of air/share air, freeflow regulator, mask flooded, mask off, regulator dropped from mouth, BCD inflator failure, buddy separation), and a five point ascent with a safety stop at planned time limit or designated ascent pressure."),
                 item("7", "Exit"),
                 item("8", "Equipment disassembly and care")
+            ]
+        )
+    }
+
+    // MARK: - Open Water Dive 1
+
+    private static func openWaterDive1() -> Checklist {
+        Checklist(
+            name: "Open Water Dive 1",
+            items: [
+                item("1", "Briefing and hand signal review", note: "During briefing, recognize the hand signals for \"okay,\" \"something is wrong,\" \"ear problem,\" \"low air,\" \"up/end the dive,\" \"stay with your buddy,\" and the audible and visual signal for \"look at me.\""),
+                item("2", "Predive acclimation"),
+                item("3", "Assemble and put on gear", note: "Put on and adjust equipment -- using proper lifting techniques."),
+                item("4", "Predive safety check", note: "Perform a predive safety check."),
+                item("5", "Entry -- positively buoyant", note: "Enter the water with BCD inflated to provide positive buoyancy."),
+                item("6", "Check and adjust weighting", note: "Check and adjust weighting."),
+                item("7", "Snorkel-to-regulator exchange (dive flexible)"),
+                item("8", "Controlled descent", note: "Descend with control and reference using a descent line or sloping bottom contour to a depth not greater than 12 metres/40 feet."),
+                item("9", "Trim check", note: "Participate in a trim check."),
+                item("10", "Clear partially flooded mask", note: "Clear a partially flooded mask."),
+                item("11", "Regulator recovery and clear", note: "Recover and clear the regulator at depth."),
+                item("12", "Explore the dive site", note: "Explore the dive site."),
+                item("13", "Air monitoring", note: "Signal whether remaining air supply is near designated caution zone, and/or indicate air supply in bar/psi."),
+                item("14", "Ascent", note: "Ascend no faster than 18 metres/60 feet per minute while maintaining buddy contact. Use the five point method (if Confined Water Dive 3 completed)."),
+                item("15", "Emergency weight drop (dive flexible)"),
+                item("16", "Exit"),
+                item("17", "Equipment disassembly and care"),
+                item("18", "Debriefing and log dive")
+            ]
+        )
+    }
+
+    // MARK: - Open Water Dive 2
+
+    private static func openWaterDive2() -> Checklist {
+        Checklist(
+            name: "Open Water Dive 2",
+            items: [
+                item("1", "Dive planning and briefing", note: "Plan dive, including air supply management/turn pressure, time limits, entry and exit, buddy separation procedures and emergency procedures."),
+                item("2", "Assemble and put on gear", note: "Put on, adjust and streamline equipment. Use proper lifting techniques."),
+                item("3", "Predive safety check", note: "Perform a predive safety check."),
+                item("4", "Entry and good surface habits", note: "When at the surface, establish positive buoyancy, keep the mask on and breathe from the snorkel or regulator."),
+                item("5", "Weight and trim check", note: "Adjust weighting and trim, as necessary."),
+                item("6", "BCD oral inflation at surface", note: "Deflate BCD, then orally inflate it until positively buoyant in water too deep in which to stand."),
+                item("7", "Cramp release (dive flexible)"),
+                item("8", "Tired diver tow (dive flexible)"),
+                item("9", "Controlled descent", note: "Descend using a descent line or sloping bottom contour for control and reference to a depth not greater than 12 m/40 ft. Use five-point method."),
+                item("10", "Neutral buoyancy", note: "Become neutrally buoyant by adjusting air in the BCD (or dry suit) with the low pressure inflator."),
+                item("11", "Clear fully flooded mask", note: "Clear a fully flooded mask."),
+                item("12", "Alternate air source use (donor/receiver) and ascent", note: "Perform each role: In a stationary position, one person signals \"out of air\" and secures and breathes from an alternate air source provided by another diver; the other diver provides the air source. Ascend properly using an alternate air source and establish positive buoyancy at the surface. Act as either donor or receiver."),
+                item("13", "Explore the dive site -- avoid bottom contact and stay close to buddy", note: "Explore the dive site. Avoid contact with sensitive organisms and the bottom, and resecure any equipment that becomes loose. Stay close enough to make physical contact with buddy within 2 seconds."),
+                item("14", "Air management within 20 bar/300 psi and signal air remaining", note: "Indicate remaining air supply within 20 bar/300 psi without rechecking. Signal air remaining at intervals assigned during dive planning."),
+                item("15", "Five point ascent -- safety stop, if feasible", note: "Ascend no faster than 18 m/60 ft per minute while maintaining buddy contact. Use five-point method. Make a safety stop if feasible."),
+                item("16", "Inflatable signal tube deployment (dive flexible)"),
+                item("17", "Exit"),
+                item("18", "Equipment disassembly and care"),
+                item("19", "Debriefing and log dive")
+            ]
+        )
+    }
+
+    // MARK: - Open Water Dive 3
+
+    private static func openWaterDive3() -> Checklist {
+        Checklist(
+            name: "Open Water Dive 3",
+            items: [
+                item("1", "Dive planning and briefing", note: "Plan the dive."),
+                item("2", "Assemble and put on gear", note: "Put on, adjust and streamline equipment. Use proper lifting techniques."),
+                item("3", "Predive safety check", note: "Perform a predive safety check."),
+                item("4", "Entry and good surface habits", note: "When at the surface, establish positive buoyancy, keep the mask on and breathe from the snorkel or regulator."),
+                item("5", "Weight and trim check", note: "Adjust weighting and trim, as necessary."),
+                item("6", "Weight system and scuba kit removal and replacement at surface (dive flexible)"),
+                item("7", "Straight line surface swim with compass (dive flexible)"),
+                item("8", "Descent with visual reference", note: "Descend with a visual reference for control to no greater than 18 metres/60 feet. Use the five-point method."),
+                item("9", "Hovering -- oral BCD inflation", note: "Become neutrally buoyant and hover by inflating the BCD orally."),
+                item("10", "Mask removal and replacement", note: "Remove, replace and clear the mask."),
+                item("11", "Underwater compass navigation (dive flexible)"),
+                item("12", "Controlled emergency swimming ascent (dive flexible)"),
+                item("13", "Explore the dive site -- avoid bottom contact and stay close to buddy", note: "Explore the dive site. Avoid contact with sensitive organisms and the bottom, and resecure any equipment that becomes loose. Stay close enough to make physical contact with buddy within 2 seconds."),
+                item("14", "Air management within 20 bar/300 psi and signal air remaining", note: "Indicate remaining air supply within 20 bar/300 psi without rechecking. Signal air remaining at intervals assigned during dive planning."),
+                item("15", "Five point ascent -- safety stop, if feasible", note: "Ascend no faster than 18 metres/60 feet per minute while maintaining buddy contact. Use the five-point method. Make a safety stop if feasible."),
+                item("16", "Exit"),
+                item("17", "Equipment disassembly and care"),
+                item("18", "Debriefing and log dive")
+            ]
+        )
+    }
+
+    // MARK: - Open Water Dive 4
+
+    private static func openWaterDive4() -> Checklist {
+        Checklist(
+            name: "Open Water Dive 4",
+            items: [
+                item("1", "Plan dive using Dive Planning Slate", note: "As a buddy team, plan the dive using the PADI Skills Practice and Dive Planning Slate."),
+                item("2", "Assemble and put on gear", note: "Put on, adjust and streamline equipment. Use proper lifting techniques."),
+                item("3", "Predive safety check", note: "Perform a predive safety check."),
+                item("4", "Entry and good surface habits", note: "When at the surface, establish positive buoyancy, keep the mask on and breathe from the snorkel or regulator."),
+                item("5", "Weight and trim check", note: "Adjust weighting and trim, as necessary."),
+                item("6", "Free descent without reference", note: "Descend with no visual reference to no greater than 18 metres/60 feet. Use the five-point method."),
+                item("7", "Explore the dive site as buddy team -- avoid bottom contact and stay close to buddy", note: "With a buddy, explore the dive site. Avoid contact with sensitive organisms and the bottom, and resecure any equipment that becomes loose. Stay close enough to make physical contact with buddy within 2 seconds."),
+                item("8", "Air management within 20 bar/300 psi and signal turn/ascent points", note: "Indicate remaining air supply within 20 bar/300 psi without rechecking. With a buddy, signal when to turn the dive and when to ascend, based on air supply or time per the dive plan, and take appropriate action."),
+                item("9", "Five point ascent with safety stop", note: "Ascend no faster than 18 metres/60 feet per minute while maintaining buddy contact. Use the five-point method. Make a safety stop."),
+                item("10", "Exit"),
+                item("11", "Equipment disassembly and care"),
+                item("12", "Debriefing and log dive")
+            ]
+        )
+    }
+
+    // MARK: - Open Water Dive Flexible Skills
+    //
+    // Skills that can be completed across any Open Water Dive (or
+    // specifically OW Dives 2, 3 or 4) rather than being tied to one
+    // specific dive -- see the "Dive Flexible Skills -- Performance
+    // Requirements" card. Referenced from the per-dive checklists above
+    // wherever a card tagged a skill "(dive flexible)" for that dive. This
+    // is a separate checklist from Confined Water's own `diveFlexibleSkills()`
+    // above (different card, different certification).
+
+    private static func openWaterDiveFlexibleSkills() -> Checklist {
+        Checklist(
+            name: "Dive Flexible Skills",
+            items: [
+                item(nil, "At the Surface", note: "During any OW Dive, have student divers demonstrate the following:", subItems: [
+                    item(nil, "Cramp Release", note: "Release a simulated cramp for self and buddy."),
+                    item(nil, "Tired Diver Tow", note: "Tow a simulated tired buddy in scuba equipment for 25 metres/yards."),
+                    item(nil, "Inflatable Signal Tube Use", note: "Deploy an inflatable signal tube at the surface, or deploy a delayed surface marker buoy (DSMB) from underwater."),
+                    item(nil, "Straight Line Surface Swim With Compass", note: "Snorkel swim in a straight line for 50 metres/yards while keeping the face in the water and using only the compass for direction reference."),
+                    item(nil, "Snorkel/Regulator Exchange", note: "Clear water from a snorkel and resume breathing without removing the snorkel from the mouth. Alternately breathe from snorkel and regulator without lifting the face from the water for at least two exchanges."),
+                    item(nil, "Remove and Replace Weight System and Scuba Kit", note: "Remove and replace the weight system in water too deep in which to stand. Remove and replace the scuba kit in water too deep in which to stand."),
+                    item(nil, "Emergency Weight Drop", note: "In either confined or open water too deep in which to stand, with a deflated BCD, use the weight system's quick release to pull clear and drop sufficient weight to become positively buoyant.")
+                ]),
+                item(nil, "Underwater", note: "During OW Dives 2, 3 or 4, have student divers demonstrate the following:", subItems: [
+                    item(nil, "Compass Navigation", note: "Swim a straight-line reciprocal course using a compass. Each diver navigates out and back."),
+                    item(nil, "Controlled Emergency Swimming Ascent (CESA)", note: "Perform a controlled emergency swimming ascent from a depth of 6-9 metres/20-30 feet and establish positive buoyancy at the surface.")
+                ])
+            ]
+        )
+    }
+
+    // MARK: - Controlled Emergency Swimming Ascent (CESA)
+
+    private static func controlledEmergencySwimmingAscent() -> Checklist {
+        Checklist(
+            name: "Controlled Emergency Swimming Ascent (CESA)",
+            items: [
+                item(nil, "Briefing", note: "Instruct student divers to:", subItems: [
+                    item(nil, "Retain their regulators in their mouths."),
+                    item(nil, "Not drop their weights."),
+                    item(nil, "Not use the control line for assistance -- the line is only for instructor control and emergency stopping."),
+                    item(nil, "Maintain a normal ascent rate. Kick to begin ascent, then reduce effort. Hold deflator to vent excess air during ascent."),
+                    item(nil, "Make a continuous sound throughout the ascent."),
+                    item(nil, "Resume normal breathing if you stop the ascent, or if they experience any difficulty."),
+                    item(nil, "Orally inflate the BCD or drop weights upon reaching the surface.")
+                ]),
+                item(nil, "Set Up", subItems: [
+                    item(nil, "Use a vertical line buoyed by a float and either tied off at the bottom or held down with sufficient weight to enable you to stop the ascent by grasping it while holding the student firmly. Conduct one student at a time while maintaining physical contact with student and control line."),
+                    item(nil, "Depth -- at least 6 metres/20 feet but not exceeding 9 metres/30 feet.")
+                ]),
+                item(nil, "Conduct", subItems: [
+                    item(nil, "Grasp the student with one hand and maintain contact with the line."),
+                    item(nil, "Give the \"up\" signal, prompting the student to exhale while emitting a continuous sound."),
+                    item(nil, "Observe -- student kicks to start, then reduces effort; doesn't use the line; keeps regulator and weights in place; maintains contact with the BCD or dry suit deflator mechanism to vent excess air during ascent."),
+                    item(nil, "Observe and maintain control during the ascent, not exceeding 18 metres/60 feet per minute. Position student near and below you, which allows you to listen for the sound and makes the student look up toward you. Be sure student exhales continuously. Stop ascent if there is any doubt. If you stop, have student repeat the skill from the beginning."),
+                    item(nil, "Upon surfacing, have student orally inflate the BCD or drop weights. Look for divers below before releasing weight. Wait for the student to become calm and relaxed before engaging in other training exercises.")
+                ])
             ]
         )
     }
