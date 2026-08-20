@@ -11,7 +11,7 @@ struct PlanMenuView: View {
             NavigationLink(value: ChecklistRoute.diveChecklists) {
                 ToolRow(
                     title: "Checklists",
-                    subtitle: "\(store.categories.count) categories",
+                    subtitle: "\(store.checklistCategories.count) categories",
                     symbolName: "checklist"
                 )
             }

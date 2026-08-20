@@ -9,6 +9,23 @@ final class AppStore: ObservableObject {
         didSet { save() }
     }
 
+    /// Every category shown under Plan > Checklists -- everything in
+    /// `categories` except "Scuba Class Packing", which is surfaced as the
+    /// first entry under Training instead (see `scubaClassPackingCategory`
+    /// below and TrainingAgenciesListView). It's still just a regular
+    /// DiveCategory stored in `categories` like any other -- persistence,
+    /// reseeding, and sync are all untouched by this; only which screen
+    /// displays it changes.
+    var checklistCategories: [DiveCategory] {
+        categories.filter { $0.name != SeedData.scubaClassPackingCategoryName }
+    }
+
+    /// The "Scuba Class Packing" category, surfaced as the first entry
+    /// under Training -- see `checklistCategories` above.
+    var scubaClassPackingCategory: DiveCategory? {
+        categories.first { $0.name == SeedData.scubaClassPackingCategoryName }
+    }
+
     @Published var savedChecklists: [SavedChecklist] {
         didSet { saveHistory() }
     }

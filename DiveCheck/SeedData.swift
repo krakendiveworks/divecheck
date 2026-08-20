@@ -12,6 +12,14 @@ enum SeedData {
     /// data too, so reordering here also fixes existing installs.
     static let canonicalOrder = ["Open Circuit", "Closed Circuit", "Technical Diving", "General Items", "Travel"]
 
+    /// Name of the "Scuba Class Packing" category -- still a plain
+    /// DiveCategory in `categories` like everything else (so persistence,
+    /// reseeding, and sync all keep working unchanged), but AppStore's
+    /// `checklistCategories`/`scubaClassPackingCategory` use this to split
+    /// it out so it surfaces as the first entry under Training instead of
+    /// under Checklists -- see TrainingAgenciesListView.
+    static let scubaClassPackingCategoryName = "Scuba Class Packing"
+
     /// Bump this whenever the starter checklist content itself changes
     /// (item wording, new sections, new units, etc.). AppStore compares it
     /// against a value saved on-device and reseeds automatically when it's
@@ -75,7 +83,16 @@ enum SeedData {
     ///   Lenses" line, and the four items moved over from Open Circuit's
     ///   removed Between Dives section above.
     /// v13 forces one more reseed so every device picks up all of this.
-    static let contentVersion = 13
+    ///
+    /// v14: every "Date"/"Date Packed" field (Prism 2 Operational and
+    /// Post-Dive headers, Assembly's scrubber-packing field, Scuba Class
+    /// Packing's header) is now a calendar picker (`ItemField.Kind.date`)
+    /// instead of a free-text field -- see ItemField.swift. v14 forces one
+    /// more reseed so already-installed checklists pick up the new field
+    /// kind on those specific fields (existing custom/typed-in checklists
+    /// are untouched either way, since Reset is the only thing that ever
+    /// touches field *values*, not field *kind*).
+    static let contentVersion = 14
 
     static func makeCategories() -> [DiveCategory] {
         [
@@ -204,7 +221,7 @@ enum SeedData {
             name: "Assembly",
             items: [
                 item("1", "Fill scrubber basket with CO2 adsorbent + store in airtight container. Label container: Date Packed, Grade, Time Used, Time Left, User",
-                     fields: [.text("Date Packed"), .text("Grade"), .text("Time Used"), .text("Time Left"), .text("User")]),
+                     fields: [.date("Date Packed"), .text("Grade"), .text("Time Used"), .text("Time Left"), .text("User")]),
                 noteItem("Maximum Scrubber Duration (EN 14143 conforming testing): 190 min (0.5% SEV CO2) using 8-12 @ 40°F/4°C, 1.6 L/min CO2, 131 fsw/40 msw · 215 min (0.5% SEV CO2) using 8-12 @ 40°F/4°C, 1.6 L/min CO2, 330 fsw/100 msw · 190 min (0.5% SEV CO2) using 8-12 @ 40°F/4°C, 1.6 L/min CO2, 18 fsw/6 msw"),
                 item("2", "Fill O2 & Diluent cylinders, analyze contents, label cylinders with name, date, contents",
                      fields: [.text("O2 %"), .text("O2 Pressure"), .text("Dil Contents"), .text("Dil Pressure"), .text("MOD")]),
@@ -266,7 +283,7 @@ enum SeedData {
             name: "Operational",
             headerFields: [
                 .text("Name"),
-                .text("Date"),
+                .date("Date"),
                 .choice("Intra-Dive", options: ["No", "Yes"]),
                 .choice("Scrubber", options: ["New", "Used"]),
                 .text("Total Time Used on Scrubber")
@@ -354,7 +371,7 @@ enum SeedData {
     private static func postDiveChecklist() -> Checklist {
         Checklist(
             name: "Post-Dive",
-            headerFields: [.text("Name"), .text("Date")],
+            headerFields: [.text("Name"), .date("Date")],
             items: [
                 item("1", "Verify and record batteries (Solenoid/Wrist Display)", subItems: [
                     item(nil, "Solenoid battery", fields: [.text("V"), .choice("Status", options: ["Good", "Replaced"])]),
@@ -369,7 +386,7 @@ enum SeedData {
                 item("8", "Turn off O2 and drain lines, remove cylinder"),
                 item("9", "Turn off diluent and drain lines, remove cylinder"),
                 item("10", "Detach bucket from head, record absorbent usage, or discard absorbent material",
-                     fields: [.choice("Absorbent", options: ["Stored for re-use", "Discarded"]), .text("Date Packed"), .text("Size"), .text("Total Hours Used")]),
+                     fields: [.choice("Absorbent", options: ["Stored for re-use", "Discarded"]), .date("Date Packed"), .text("Size"), .text("Total Hours Used")]),
                 item("11", "Sanitize bucket"),
                 item("12", "Inspect O2 sensors, record readings in air", fields: [.text("Sensor 1"), .text("Sensor 2"), .text("Sensor 3")]),
                 item("13", "Disassemble mouthpiece to counterlung hose assembly, sanitize; hang to dry"),
@@ -603,7 +620,7 @@ enum SeedData {
             name: "Scuba Class Packing Checklist",
             headerFields: [
                 .text("Class"),
-                .text("Date"),
+                .date("Date"),
                 .text("Number of Students")
             ],
             items: [
@@ -670,7 +687,7 @@ enum SeedData {
                 item("Dive Site Emergency Plan")
             ]
         )
-        return DiveCategory(name: "Scuba Class Packing", symbolName: "list.clipboard.fill", checklists: [packing])
+        return DiveCategory(name: scubaClassPackingCategoryName, symbolName: "list.clipboard.fill", checklists: [packing])
     }
 
     // MARK: - Item helpers

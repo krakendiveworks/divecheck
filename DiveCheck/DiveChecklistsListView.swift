@@ -2,14 +2,16 @@ import SwiftUI
 
 /// The "Dive Checklists" Tools entry: groups all the dive-type checklist
 /// categories (Open Circuit, Closed Circuit, Technical Diving, Travel) in
-/// one place, one tap in from the home screen.
+/// one place, one tap in from the home screen. "Scuba Class Packing" is
+/// deliberately excluded here -- it lives under Training instead, see
+/// AppStore.checklistCategories.
 struct DiveChecklistsListView: View {
     @ObservedObject var store: AppStore
 
     var body: some View {
         List {
             Section {
-                ForEach(store.categories) { category in
+                ForEach(store.checklistCategories) { category in
                     NavigationLink(value: route(for: category)) {
                         CategoryRow(category: category)
                     }
