@@ -353,7 +353,10 @@ struct CertificationDetailView: View {
 /// Isolates the iOS-17-vs-16 onChange(of:) signature split into a single
 /// reusable ViewModifier, since PhotosPicker selection handling needs this
 /// same branch in more than one screen (see also DiveLogDetailView.swift).
-private struct PhotoPickerChangeModifier: ViewModifier {
+/// Not private -- DiverMedicalIDView reuses this directly for the DAN
+/// insurance card photo picker rather than duplicating the same branch a
+/// third time.
+struct PhotoPickerChangeModifier: ViewModifier {
     @Binding var item: PhotosPickerItem?
     let onChange: () -> Void
 

@@ -1,5 +1,7 @@
 import SwiftUI
 import UniformTypeIdentifiers
+import PhotosUI
+import UIKit
 
 /// Edits the diver's own personal medical ID card -- allergies, medications,
 /// conditions, and who to contact -- for when the diver themselves is the
@@ -10,6 +12,17 @@ struct DiverMedicalIDView: View {
     @State private var shareItems: [Any]?
     @State private var isShowingFileImporter = false
     @State private var isShowingPreview = false
+    @State private var isShowingSavedConfirmation = false
+
+    // DAN insurance card -- photo (PhotoStorage) and PDF (DocumentStorage)
+    // are independent slots, same as Certification's cardImage/
+    // cardDocument split. See danCardImageSection/danCardDocumentSection.
+    @State private var danCardImage: UIImage?
+    @State private var danCardPhotoPickerItem: PhotosPickerItem?
+    @State private var isShowingDanCardCamera = false
+    @State private var isShowingDanCardFullScreenImage = false
+    @State private var isShowingDanCardDocumentImporter = false
+    @State private var isShowingDanCardDocumentPreview = false
 
     private var card: Binding<DiverMedicalID> {
         store.medicalIDBinding
@@ -87,27 +100,54 @@ struct DiverMedicalIDView: View {
 
             Section {
                 LabeledTextField(label: "Membership #", text: card.danMembershipNumber)
+                danCardImageSection
+                danCardDocumentSection
             } header: {
                 Text("DAN Membership")
             } footer: {
-                Text("DAN Emergency Hotline: \(EmergencyActionPlan.danEmergencyHotline) -- shown on every Emergency Action Plan.")
+                Text("DAN Emergency Hotline: \(EmergencyActionPlan.danEmergencyHotline) -- shown on every Emergency Action Plan. Optionally attach a photo or PDF of your DAN insurance card so it's on hand alongside your membership number.")
             }
 
             Section("Additional Notes") {
                 TextField("Anything else worth having on hand", text: card.additionalNotes, axis: .vertical)
                     .lineLimit(1...6)
             }
+
+            Section {
+                NavigationLink(value: ChecklistRoute.savedDiverMedicalIDs) {
+                    ToolRow(
+                        title: "Saved Medical IDs",
+                        subtitle: "\(store.savedDiverMedicalIDs.count) saved",
+                        symbolName: "tray.full.fill"
+                    )
+                }
+            }
         }
         .navigationTitle("Diver Medical ID")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            Button {
-                if let url = DiverMedicalIDPDFRenderer.renderPDF(card: card.wrappedValue) {
-                    shareItems = [url]
+            ToolbarItem(placement: .navigationBarTrailing) {
+                HStack(spacing: 16) {
+                    Button {
+                        store.saveDiverMedicalIDSnapshot(card.wrappedValue)
+                        isShowingSavedConfirmation = true
+                    } label: {
+                        Label("Save to History", systemImage: "tray.and.arrow.down")
+                    }
+                    Button {
+                        if let url = DiverMedicalIDPDFRenderer.renderPDF(card: card.wrappedValue) {
+                            shareItems = [url]
+                        }
+                    } label: {
+                        Image(systemName: "square.and.arrow.up")
+                    }
                 }
-            } label: {
-                Image(systemName: "square.and.arrow.up")
             }
+        }
+        .alert("Saved to History", isPresented: $isShowingSavedConfirmation) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("A copy of this Diver Medical ID as it stands right now was saved. View it anytime from Saved Medical IDs above — it stays fully editable there too.")
         }
         .background(ShareSheetPresenter(items: $shareItems))
         .fileImporter(isPresented: $isShowingFileImporter, allowedContentTypes: [.pdf]) { result in
@@ -135,6 +175,49 @@ struct DiverMedicalIDView: View {
                             }
                         }
                 }
+            }
+        }
+        .fileImporter(isPresented: $isShowingDanCardDocumentImporter, allowedContentTypes: [.pdf]) { result in
+            handleDanCardDocumentImportResult(result)
+        }
+        .sheet(isPresented: $isShowingDanCardDocumentPreview) {
+            if let filename = card.wrappedValue.danCardDocumentFilename {
+                // Same explicit-Done-button wrapping as the WRSTC preview
+                // above, for the same reason.
+                NavigationStack {
+                    DocumentPreview(url: DocumentStorage.url(for: filename))
+                        .navigationTitle("DAN Insurance Card")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Done") {
+                                    isShowingDanCardDocumentPreview = false
+                                }
+                            }
+                        }
+                }
+            }
+        }
+        .onAppear {
+            if danCardImage == nil, let filename = card.wrappedValue.danCardImageFilename {
+                danCardImage = PhotoStorage.load(filename)
+            }
+        }
+        // onChange(of:perform:) was deprecated in iOS 17 in favor of a
+        // two-parameter (or zero-parameter) closure, but the replacement
+        // isn't available pre-iOS 16 -- PhotoPickerChangeModifier (defined
+        // in CertificationDetailView.swift, reused here) isolates that
+        // branch in one place.
+        .modifier(PhotoPickerChangeModifier(item: $danCardPhotoPickerItem, onChange: loadPickedDanCardPhoto))
+        .fullScreenCover(isPresented: $isShowingDanCardCamera) {
+            CameraCapture { data in
+                saveDanCardPhotoData(data)
+            }
+            .ignoresSafeArea()
+        }
+        .fullScreenCover(isPresented: $isShowingDanCardFullScreenImage) {
+            if let danCardImage {
+                FullScreenImageViewer(image: danCardImage)
             }
         }
     }
@@ -208,6 +291,163 @@ struct DiverMedicalIDView: View {
         }
         card.wrappedValue.wrstcFormFilename = nil
         card.wrappedValue.wrstcFormUploadedAt = nil
+    }
+
+    // MARK: - DAN Insurance Card (photo)
+
+    @ViewBuilder
+    private var danCardImageSection: some View {
+        if let danCardImage {
+            Image(uiImage: danCardImage)
+                .resizable()
+                .scaledToFit()
+                .frame(maxHeight: 180)
+                .frame(maxWidth: .infinity)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    isShowingDanCardFullScreenImage = true
+                }
+                .overlay(alignment: .bottomTrailing) {
+                    Image(systemName: "arrow.up.left.and.arrow.down.right")
+                        .font(.caption)
+                        .foregroundStyle(.white)
+                        .padding(6)
+                        .background(.black.opacity(0.45), in: Circle())
+                        .padding(6)
+                        .allowsHitTesting(false)
+                }
+        }
+
+        HStack {
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                Button {
+                    isShowingDanCardCamera = true
+                } label: {
+                    Label("Take Photo", systemImage: "camera")
+                }
+                .buttonStyle(.borderless)
+                Spacer()
+            }
+            PhotosPicker(selection: $danCardPhotoPickerItem, matching: .images) {
+                Label(danCardImage == nil ? "Choose Photo" : "Replace Photo", systemImage: "photo.badge.plus")
+            }
+            .buttonStyle(.borderless)
+            if danCardImage != nil {
+                Spacer()
+                Button(role: .destructive) {
+                    removeDanCardPhoto()
+                } label: {
+                    Label("Remove Photo", systemImage: "trash")
+                }
+                .buttonStyle(.borderless)
+            }
+        }
+    }
+
+    /// Writes freshly-picked photo data to disk via PhotoStorage, deletes
+    /// whatever image previously occupied this slot (if any), and points
+    /// the card at the new filename -- mirrors CertificationDetailView's
+    /// savePhotoData.
+    private func saveDanCardPhotoData(_ data: Data) {
+        guard let filename = PhotoStorage.save(data) else { return }
+        if let oldFilename = card.wrappedValue.danCardImageFilename {
+            PhotoStorage.delete(oldFilename)
+        }
+        card.wrappedValue.danCardImageFilename = filename
+        danCardImage = PhotoStorage.load(filename)
+    }
+
+    private func loadPickedDanCardPhoto() {
+        guard let item = danCardPhotoPickerItem else { return }
+        danCardPhotoPickerItem = nil
+        Task {
+            if let data = try? await item.loadTransferable(type: Data.self) {
+                saveDanCardPhotoData(data)
+            }
+        }
+    }
+
+    private func removeDanCardPhoto() {
+        if let filename = card.wrappedValue.danCardImageFilename {
+            PhotoStorage.delete(filename)
+        }
+        card.wrappedValue.danCardImageFilename = nil
+        danCardImage = nil
+    }
+
+    // MARK: - DAN Insurance Card (PDF)
+
+    @ViewBuilder
+    private var danCardDocumentSection: some View {
+        if let filename = card.wrappedValue.danCardDocumentFilename {
+            HStack {
+                Image(systemName: "doc.richtext.fill")
+                    .foregroundStyle(.blue)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("DAN Card PDF on File")
+                        .font(.body.weight(.medium))
+                    if let uploadedAt = card.wrappedValue.danCardDocumentUploadedAt {
+                        Text("Uploaded \(uploadedAt.formatted(date: .abbreviated, time: .omitted))")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Spacer()
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                isShowingDanCardDocumentPreview = true
+            }
+
+            Button {
+                isShowingDanCardDocumentPreview = true
+            } label: {
+                Label("View", systemImage: "eye")
+            }
+            Button {
+                shareItems = [DocumentStorage.url(for: filename)]
+            } label: {
+                Label("Export", systemImage: "square.and.arrow.up")
+            }
+            Button {
+                isShowingDanCardDocumentImporter = true
+            } label: {
+                Label("Replace PDF", systemImage: "arrow.triangle.2.circlepath")
+            }
+            Button(role: .destructive) {
+                removeDanCardDocument()
+            } label: {
+                Label("Remove PDF", systemImage: "trash")
+            }
+        } else {
+            Button {
+                isShowingDanCardDocumentImporter = true
+            } label: {
+                Label("Upload PDF", systemImage: "doc.badge.plus")
+            }
+        }
+    }
+
+    /// Saves a newly-picked PDF to disk via DocumentStorage, deletes
+    /// whatever document previously occupied this slot (if any), and points
+    /// the card at the new filename -- mirrors handleFileImportResult
+    /// above (the WRSTC form's equivalent).
+    private func handleDanCardDocumentImportResult(_ result: Result<URL, Error>) {
+        guard case .success(let sourceURL) = result, let filename = DocumentStorage.save(from: sourceURL) else { return }
+        if let oldFilename = card.wrappedValue.danCardDocumentFilename {
+            DocumentStorage.delete(oldFilename)
+        }
+        card.wrappedValue.danCardDocumentFilename = filename
+        card.wrappedValue.danCardDocumentUploadedAt = Date()
+    }
+
+    private func removeDanCardDocument() {
+        if let filename = card.wrappedValue.danCardDocumentFilename {
+            DocumentStorage.delete(filename)
+        }
+        card.wrappedValue.danCardDocumentFilename = nil
+        card.wrappedValue.danCardDocumentUploadedAt = nil
     }
 }
 

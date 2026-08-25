@@ -41,6 +41,21 @@ struct DiverMedicalID: Identifiable, Codable, Equatable {
     var wrstcFormFilename: String?
     var wrstcFormUploadedAt: Date?
 
+    /// Filename of a saved photo of the physical DAN (or equivalent
+    /// dive-accident insurance) card, stored on disk via PhotoStorage (see
+    /// PhotoStorage.swift) -- same file-on-disk-by-filename pattern as
+    /// Certification's `cardImageFilename`. Independent of
+    /// `danCardDocumentFilename` below: the diver can have a photo, a PDF,
+    /// both, or neither.
+    var danCardImageFilename: String?
+
+    /// Filename of an uploaded PDF copy of the DAN insurance card (e.g. a
+    /// downloaded membership card PDF), stored on disk via DocumentStorage
+    /// -- mirrors Certification's `cardDocumentFilename`/
+    /// `cardDocumentUploadedAt`.
+    var danCardDocumentFilename: String?
+    var danCardDocumentUploadedAt: Date?
+
     init(
         id: UUID = UUID(),
         fullName: String = "",
@@ -57,7 +72,10 @@ struct DiverMedicalID: Identifiable, Codable, Equatable {
         danMembershipNumber: String = "",
         additionalNotes: String = "",
         wrstcFormFilename: String? = nil,
-        wrstcFormUploadedAt: Date? = nil
+        wrstcFormUploadedAt: Date? = nil,
+        danCardImageFilename: String? = nil,
+        danCardDocumentFilename: String? = nil,
+        danCardDocumentUploadedAt: Date? = nil
     ) {
         self.id = id
         self.fullName = fullName
@@ -75,5 +93,8 @@ struct DiverMedicalID: Identifiable, Codable, Equatable {
         self.additionalNotes = additionalNotes
         self.wrstcFormFilename = wrstcFormFilename
         self.wrstcFormUploadedAt = wrstcFormUploadedAt
+        self.danCardImageFilename = danCardImageFilename
+        self.danCardDocumentFilename = danCardDocumentFilename
+        self.danCardDocumentUploadedAt = danCardDocumentUploadedAt
     }
 }

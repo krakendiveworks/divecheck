@@ -1127,22 +1127,36 @@ final class AppStore: ObservableObject {
     // MARK: - Saved Diver Medical IDs
 
     /// Freezes a copy of the Diver Medical ID card and adds it to history.
-    /// If the card has a WRSTC form on file, the snapshot gets its own
-    /// independent copy of that file (see DocumentStorage.duplicate) so a
-    /// later replace/remove on the live card's form doesn't affect what
-    /// was saved.
+    /// If the card has a WRSTC form and/or a DAN insurance card photo/PDF on
+    /// file, the snapshot gets its own independent copy of each file (see
+    /// DocumentStorage.duplicate/PhotoStorage.duplicate) so a later replace/
+    /// remove on the live card doesn't affect what was saved.
     func saveDiverMedicalIDSnapshot(_ medicalID: DiverMedicalID) {
         var copy = medicalID
         if let filename = medicalID.wrstcFormFilename {
             copy.wrstcFormFilename = DocumentStorage.duplicate(filename)
+        }
+        if let filename = medicalID.danCardImageFilename {
+            copy.danCardImageFilename = PhotoStorage.duplicate(filename)
+        }
+        if let filename = medicalID.danCardDocumentFilename {
+            copy.danCardDocumentFilename = DocumentStorage.duplicate(filename)
         }
         let snapshot = SavedDiverMedicalID(medicalID: copy)
         savedDiverMedicalIDs.insert(snapshot, at: 0)
     }
 
     func deleteSavedDiverMedicalID(_ id: UUID) {
-        if let saved = savedDiverMedicalIDs.first(where: { $0.id == id }), let filename = saved.medicalID.wrstcFormFilename {
-            DocumentStorage.delete(filename)
+        if let saved = savedDiverMedicalIDs.first(where: { $0.id == id }) {
+            if let filename = saved.medicalID.wrstcFormFilename {
+                DocumentStorage.delete(filename)
+            }
+            if let filename = saved.medicalID.danCardImageFilename {
+                PhotoStorage.delete(filename)
+            }
+            if let filename = saved.medicalID.danCardDocumentFilename {
+                DocumentStorage.delete(filename)
+            }
         }
         savedDiverMedicalIDs.removeAll { $0.id == id }
     }
