@@ -5,14 +5,17 @@ struct DiveLogListView: View {
     @Binding var path: [ChecklistRoute]
 
     // Admin Mode only (store.isAdminModeEnabled) -- multi-select, bulk
-    // delete, and bulk edit. Hand-rolled rather than SwiftUI's
-    // List(selection:)/EditMode so row taps unambiguously mean "select"
-    // while selecting is active, same manual-checkbox pattern already used
-    // for the Bluetooth import screen's dive list.
+    // delete, bulk edit, and bulk commit (Save, moving entries out of
+    // "Draft" without opening each one individually). Hand-rolled rather
+    // than SwiftUI's List(selection:)/EditMode so row taps unambiguously
+    // mean "select" while selecting is active, same manual-checkbox
+    // pattern already used for the Bluetooth import screen's dive list.
     @State private var isSelecting = false
     @State private var selectedIDs: Set<UUID> = []
     @State private var isShowingDeleteConfirm = false
     @State private var isShowingBulkEditSheet = false
+    @State private var isShowingCommitConfirmation = false
+    @State private var committedCount = 0
 
     private var sorted: [DiveLogEntry] {
         store.diveLogEntries.sorted { $0.date > $1.date }
@@ -93,6 +96,11 @@ struct DiveLogListView: View {
         } message: {
             Text("This can't be undone.")
         }
+        .alert("Dives Saved", isPresented: $isShowingCommitConfirmation) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("\(committedCount) dive\(committedCount == 1 ? "" : "s") marked as saved and moved out of Draft. They stay fully editable — you can Save again anytime, individually or in bulk.")
+        }
     }
 
     @ViewBuilder
@@ -133,6 +141,23 @@ struct DiveLogListView: View {
                 .foregroundStyle(.secondary)
 
             Spacer()
+
+            // Commits every selected entry out of "Draft" in one tap --
+            // same effect as opening each one individually and tapping
+            // Save (see AppStore.commitDiveLogEntries and the doc comment
+            // on DiveLogEntry.savedAt). Safe to run over a mix of drafts
+            // and already-saved dives; already-saved ones just get their
+            // timestamp refreshed.
+            Button {
+                committedCount = selectedIDs.count
+                store.commitDiveLogEntries(selectedIDs)
+                selectedIDs.removeAll()
+                isSelecting = false
+                isShowingCommitConfirmation = true
+            } label: {
+                Label("Save", systemImage: "tray.and.arrow.down")
+            }
+            .disabled(selectedIDs.isEmpty)
 
             Button {
                 isShowingBulkEditSheet = true

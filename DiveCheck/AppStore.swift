@@ -756,6 +756,22 @@ final class AppStore: ObservableObject {
         }
     }
 
+    /// Admin Mode bulk commit -- stamps `savedAt` on every entry in `ids`,
+    /// the same effect DiveLogDetailView's own Save button has on a single
+    /// entry (see the doc comment on DiveLogEntry.savedAt). Lets a diver
+    /// move a whole batch of drafts -- e.g. everything just pulled in from
+    /// a computer import -- past "Draft" in one tap instead of opening each
+    /// entry individually just to tap Save. Applying it to an entry that's
+    /// already saved just refreshes its timestamp, same as re-tapping Save
+    /// on it individually would, so it's safe to run over a mixed
+    /// selection of drafts and already-saved dives.
+    func commitDiveLogEntries(_ ids: Set<UUID>) {
+        let now = Date()
+        for index in diveLogEntries.indices where ids.contains(diveLogEntries[index].id) {
+            diveLogEntries[index].savedAt = now
+        }
+    }
+
     /// Adds a fully-built entry (e.g. one mapped from an imported dive
     /// computer download), as opposed to `addDiveLogEntry()` which creates
     /// a blank one for manual editing.
