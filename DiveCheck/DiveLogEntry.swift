@@ -19,6 +19,7 @@ enum DiveEntryType: String, Codable, CaseIterable, Identifiable {
     case shore = "Shore"
     case boat = "Boat"
     case dock = "Dock"
+    case deck = "Deck"
     case boatRamp = "Boat Ramp"
 
     var id: String { rawValue }
@@ -43,6 +44,7 @@ enum SiteType: String, Codable, CaseIterable, Identifiable {
     case wreck = "Wreck"
     case wall = "Wall"
     case quarry = "Quarry"
+    case pool = "Pool"
     case seaGrass = "Sea Grass"
     case lake = "Lake"
     case cave = "Cave"
